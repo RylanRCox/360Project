@@ -1,0 +1,31 @@
+<div class="comment">
+	<div class="commentHead">
+		<div class="commentVotes">
+			<button type="submit" id="breadvote"><img src="images/breadstick.png" class="upbread" alt="UpBread"></button>
+				<p>VOTES</p>
+			<button type="submit" id="breadvote"> <img src="images/breadstick.png" class="downbread" alt="UpBread"></button>
+		</div><!--Close Comment Votes-->
+		<div class="commentInfo">
+			<form method="GET" action="userHistory.php">
+				<button type="submit" name="userID" value="USERID">
+					DISPLAYNAME DAYS ago
+				</button>
+			</form>
+		</div><!--Close Comment Info-->
+	</div><!--Close Comment Head-->
+	<div class="commentContent">
+		<p>CONTENT</p>
+	</div><!--Close comment Content-->
+	<form method="POST" class="submitForm" enctype="multipart/form-data" onsubmit="return validate()">
+		<fieldset>
+			<div class="commentContainer">
+				<textarea id="commentResponseText" name="content" rows="15" cols="102" placeholder="Enter your content here" required></textarea>
+			</div><!--Close comment Container-->
+			<div class="commentSubmission">
+				<input type="submit" class="submitButton" />
+				<input type='hidden' class='commentParent' name='commentParent' value='COMMENTID' />
+				<input type='hidden' class='postID' name='postID' value='POSTID' />
+			</div><!--Close content submission-->
+		</fieldset>
+	</form>
+</div>

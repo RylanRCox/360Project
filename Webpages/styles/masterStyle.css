@@ -1,0 +1,652 @@
+body {
+	margin: 0;
+	margin-top: 3.5em;
+	background-image: url(../images/Bread.jpeg);
+	background-repeat: repeat;
+	overflow-x: hidden;
+}
+
+page {
+	margin: 0;
+	margin-top: 0;
+}
+
+page, h1, h2, p, body {
+	font-family: verdana, arial, helvetica, sans-serif;
+}
+
+/*NAVBAR CODE*/
+/*I'm aware the nav bar is total garbage but I don't have an additional 20 hours to mess with it*/
+/*I'm never shitting on front end again, this stuff is a total pain in the ass*/
+nav {
+	margin-top: -4em;
+	position: fixed;
+	width: 100%;
+	height: 3.28em;
+	z-index: 3;
+}
+
+	nav ul {
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+		overflow: auto;
+		background-image: linear-gradient(90deg, #181372 0%, #090979 35%, #570f81 100%);
+		border-bottom: .1em solid rgb(94, 8, 121);
+	}
+
+		nav ul li {
+			float: left;
+			margin-top: .40em;
+			padding: 0% 4% 0% 4%;
+			width: 5%;
+			display: block;
+		}
+
+#logo {
+	margin-top: 0em;
+	padding-left: 0;
+	width: 10%;
+}
+
+nav ul li a, .dropbtn {
+	display: inline-block;
+	color: white;
+	text-align: center;
+	padding: 14px 16px; /*todo fix from pixel mesurements */
+	text-decoration: none;
+}
+
+li.dropdown {
+	display: inline-block;
+}
+
+.dropdown-content {
+	margin: .1em;
+	display: none;
+	position: absolute;
+	background-color: #f9f9f9;
+	min-width: 5em;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	z-index: 2;
+}
+
+.dropdown-content {
+	background-color: deepskyblue;
+	color: black;
+}
+
+	.dropdown-content button {
+		width: 100%;
+		background: none;
+		border: none;
+		color: black;
+		padding: 12px 16px;
+		text-decoration: none;
+		display: block;
+		text-align: left;
+	}
+
+		.dropdown-content button:hover {
+			background-color: #f1f1f1;
+		}
+
+.dropdown:hover .dropdown-content {
+	display: block;
+}
+
+#breadly {
+	width: 2.5em;
+	height: 2.5em;
+	position: absolute;
+	left: 1em;
+	top: 0.5em;
+}
+
+#searchbox {
+	width: 15em;
+	padding-left: 2em;
+}
+
+	#searchbox form {
+		width: 100%;
+		display: flex;
+	}
+
+#search {
+	width: 10em;
+	height: 1.5em;
+	margin-top: .6em;
+	font-family: verdana, arial, helvetica, sans-serif;
+	background-color: #26064e;
+	color: white;
+	border: none;
+	font-size: 1.05em;
+	text-align: center;
+	border: .05em solid #26064e;
+	border-radius: .8em;
+}
+
+	#search:hover {
+		border: .05em solid white;
+		border-radius: .8em;
+		background-color: #168492;
+	}
+
+#searchButton {
+	margin-top: 0.8em;
+	background-color: deepskyblue;
+	border-radius: 1em;
+	margin-left: 0.1em;
+}
+
+#prefs {
+	margin-left: -2.5em;
+}
+
+#logout {
+	margin-left: 2em;
+}
+
+/* Sorting */
+.main-content {
+	margin: auto;
+	margin-left: 1%;
+	width: 100%;
+}
+
+.order {
+	margin-top: .5em;
+	background-color: #340a68;
+	height: 3.5em;
+	width: 100%;
+	border-radius: .3em;
+	border: .1em solid #410e80;
+	overflow: hidden;
+}
+
+	.order ul {
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+		overflow: auto;
+		display: flex;
+	}
+		.order ul li {
+			margin: 0.5em;
+			color: white;
+		}
+			.order ul li p {
+				margin-top: 0.6em;
+			}
+
+			.order ul li button {
+				background-color: deepskyblue;
+				border-radius: 1em;
+				font-size: 1.5em;
+				padding: 0.2em;
+				width: 5em;
+			}
+
+/*feed and side container*/
+.feed {
+	margin: 1em 0em 6em 0em;
+	margin: 1em 0em 6em 0em;
+	float: left;
+	width: 70%;
+	color: white;
+	background-color: #340a68;
+	height: 10%;
+	border-radius: .3em;
+	border: .1em solid #410e80;
+}
+
+
+
+.side-container {
+	margin: 1em 0 0em 71.5%;
+	overflow: auto;
+	color: white;
+	background-color: #340a68;
+	height: 30em;
+	text-align: center;
+	border-radius: .3em;
+	border: .1em solid #410e80;
+	overflow: hidden;
+	width: 26.5%;
+}
+
+	.side-container ul {
+		list-style-type: none;
+	}
+
+#profilePicture {
+	width: 60%;
+	height: 80%;
+	border: 0.3em dashed #E8A711;
+	border-radius: 100em;
+}
+
+#ad {
+	width: 60%;
+	height: 80%;
+}
+
+/*post styling*/
+.post {
+	padding: -4em;
+	border: 1px solid white;
+	width: 99.85%;
+	height: 6.21em;
+	overflow: hidden;
+}
+
+	.post ul {
+		list-style-type: none;
+		display: flex;
+		margin: 0;
+		padding: 0;
+	}
+
+.upperUL {
+	justify-content: flex-start;
+}
+
+.lowerUL {
+	justify-content: flex-end;
+}
+
+	.lowerUL a {
+		font-size: small;
+		margin-bottom: -3em;
+	}
+
+.post ul li {
+	float: left;
+	display: block;
+	margin-right: 1em;
+	margin-left: 1em;
+}
+
+.post ul button {
+	background-color: #8a40bf;
+	border: none;
+	border-radius: 1em;
+}
+
+
+.breadvote {
+	background: none;
+	color: inherit;
+	border: none;
+	padding: 0;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+}
+
+.breadStickImage {
+	width: 1em;
+	height: 1em;
+}
+
+.votes {
+	float: left;
+	width: 1em;
+	padding: .5em 1em 0.5em 1.2em;
+	margin-top: 0;
+}
+
+	.votes p {
+		margin-top: 0.8em;
+		margin-bottom: 0.8em;
+	}
+
+.post-content {
+	margin-top: 0em;
+	position: relative;
+	overflow: hidden;
+}
+
+.post-image {
+	width: 6.5em;
+	height: 5em;
+	padding: .8em 0em .8em 0em;
+	float: left;
+	border-radius: 1.5em;
+	margin-top: -0.1em;
+}
+
+.title {
+	margin: 0;
+	padding-top: 0.2em;
+}
+
+	.title button {
+		background: none;
+		border: none;
+		color: white;
+		font-size: 2em;
+		font-weight: bold;
+	}
+
+a:link {
+	text-decoration: none;
+	color: white;
+}
+
+a:visited {
+	text-decoration: none;
+	color: white;
+}
+
+a:hover {
+	text-decoration: none;
+}
+
+a:active {
+	text-decoration: none;
+}
+#postImage {
+	border: 0.2em dashed black;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 70%;
+	height: 70%;
+}
+
+/* Navigation Buttons*/
+.feednav {
+	margin-top: -3.5em;
+	float: left;
+	position: absolute;
+	width: 20em
+}
+
+	.feednav ul {
+		list-style-type: none;
+	}
+
+		.feednav ul li a {
+			list-style-type: none;
+			z-index: 66;
+		}
+
+		.feednav ul a {
+			float: left;
+			padding: .6em;
+			background-color: #340a68;
+			border: .1em solid #410e80;
+			border-radius: 1em;
+			margin: 0em 1em 0em 1em;
+		}
+
+#prev {
+	margin-left: -4.5em;
+}
+
+/*Slice specific stuff*/
+.slice-banner {
+	background-image: url(../images/carbrolls.jpg);
+	background-repeat: no-repeat;
+	background-size: 100% 400%;
+	width: 100%;
+	height: 21em;
+	overflow: hidden;
+	position: relative;
+	top:-0.6em;
+}
+
+.banner-end {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	height: 28%;
+	background-color: #340a68;
+	color: white;
+	display: flex;
+}
+
+	.banner-end h1, h3 {
+		margin-left: 9%;
+		position: relative;
+	}
+
+	.banner-end h1 {
+		font-size: 24px;
+	}
+
+	.banner-end h3 {
+		font-size: 16px;
+		font-weight: 200;
+		color: lightgrey;
+	}
+
+	.banner-end img {
+		width: 5em;
+		height: 5em;
+		border-radius: 5em;
+		border: .25em solid white;
+		z-index: 2;
+		margin-left: 3em;
+		margin-top: 0.2em;
+	}
+
+/*Search Results specific stuff*/
+
+.searchResult {
+	margin-top: 0.5em;
+	margin-left: 0.5em;
+	margin-bottom: 0.5em;
+}
+	.searchResult button {
+		background-color: deepskyblue;
+		border: 0.1em solid black;
+			border-radius: 1em;
+			height: 2em;
+			width: 20em;
+			text-align: left;
+			padding: 0.5em;
+	}
+
+/*User history specific stuff*/
+
+.user-container {
+	margin: 1em 0 0em 71.5%;
+	overflow: auto;
+	color: white;
+	background-color: #340a68;
+	height: 16em;
+	text-align: center;
+	border-radius: .3em;
+	border: .1em solid #410e80;
+	overflow: hidden;
+	width: 26.5%;
+}
+
+/*post styling*/
+.post {
+	padding: -4em;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	margin: 0;
+}
+
+.post-head {
+	height: 5em;
+	width: 100%;
+}
+
+.post-body {
+	height: 100%;
+	margin: -1em 0em -1em 0em;
+	padding: 0em 3em 1em 3em;
+}
+
+.post ul {
+	list-style-type: none;
+}
+
+.post .title {
+	margin-top: 0em;
+}
+
+
+
+/*Comments*/
+
+.comments {
+	margin: 0em 3.5em 0em 2.4em;
+}
+
+.comment {
+	margin: .3em;
+	padding-left: .4em;
+	border: outset;
+	border-width: 0.2em;
+}
+
+.commentHead {
+	width: 100%;
+}
+
+.commentInfo {
+	margin-top: 0em;
+	overflow: hidden;
+	font-size: 14px;
+	text-decoration: underline;
+}
+
+.commentContent {
+	margin-left: 3em;
+}
+
+.commentContainer {
+	margin-left: 2em;
+	float: left;
+	width: 80%;
+}
+
+.commentResponseText {
+	width: 100%;
+	clear: left;
+	height: 3em;
+}
+
+.commentSubmission {
+	float: right;
+	margin-bottom: 2em;
+	background-image: url(../images/submit.png);
+	background-size: 4em;
+	width: 3.5em;
+	height: 2.3em;
+	background-repeat: no-repeat;
+	color: black;
+	padding: 0.7em 0 0 0.4em;
+	font-weight: bold;
+}
+
+.commentVotes {
+	float: left;
+	width: .6em;
+	padding: .5em 1em 0.5em 1.2em;
+	margin: 0;
+	position: relative;
+	height: 2em;
+}
+
+	.commentVotes p {
+		margin: 1.2em .2em .5em 0em;
+	}
+
+fieldset {
+	border: none;
+}
+
+.submitButton {
+	background: none;
+	border: none;
+	font-weight: bold;
+	font-size: 1em;
+	margin-left: -0.6em;
+}
+#submitContainer {
+	display: flex;
+	justify-content: flex-end;
+}
+#submitContainer .submitButton {
+	margin-top: 0.5em;
+	background-color: deepskyblue;
+	border-radius: 1em;
+	right:0;
+}
+
+/*User Display*/
+#userDiv {
+	overflow: hidden;
+	float: right;
+	width: 10%;
+	height: 3.28em;
+	margin-right: 2em;
+}
+#userFig {
+	display:flex;
+}
+
+#userImage {
+	height: 2em;
+	width: 2em;
+	border-radius: 100%;
+}
+
+#displayName {
+	margin: 0.4em;
+	color: white;
+	font-weight: bolder;
+}
+
+/*Post Creator*/
+fieldset {
+	border: none;
+}
+
+#newPostCreator {
+	position: relative;
+	margin: auto;
+	padding: 0.5em;
+	width: 50em;
+	border: 0.2em dashed red;
+	background-color: lightgrey;
+}
+
+#titleContainer {
+	position: relative;
+	float: left;
+	top: 0;
+}
+
+#sliceContainer {
+	position: relative;
+	float: right;
+	top: 0;
+}
+
+#newContentContainer {
+	position: relative;
+	clear: both;
+	margin: 2em 0 1em 0;
+}
+
+#photoContainer {
+	position: relative;
+	float: left;
+	bottom: 0;
+}
+
+#newPostsubmitContainer {
+	position: relative;
+	float: right;
+	bottom: 0;
+}

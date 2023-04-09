@@ -200,20 +200,6 @@
 					} else {
 						days = days + " days";
 					}
-					/*
-					let isAdmin = JSON.parse('<?php echo json_encode($_SESSION['isAdmin']); ?>');
-					let adminHTML = "";
-					if(isAdmin){
-						adminHTML = '<button type = "button" id = "commentID' + commentID + '">Delete</button>';
-						setTimeout(function(){
-							let deleteButton = document.getElementById('commentID' + commentID);
-							deleteButton.addEventListener('click', function(){
-								deleteComment(commentID);
-								setTimeout(function(){writeComments();}, 500);
-								return;
-							});
-						},100);	
-					}*/
 
 					/*<div class = "comment"></div> */
 					let classDiv = document.createElement("div");
@@ -227,18 +213,17 @@
 					let contentDiv = document.createElement("div");
 					contentDiv.setAttribute('class', 'commentContent');
 
-					/*<form method="GET" action="post.php"></form> */
+					/*<form method="GET" action="./PHP/addComment.php"></form> */
 					let submitForm = document.createElement("form");
 					submitForm.setAttribute('method', 'POST');
 					submitForm.setAttribute('enctype', 'multipart/form-data');
-					submitForm.setAttribute('onsubmit', 'return validate()');
 					submitForm.setAttribute('action', './PHP/addComment.php')
 
 					/*
 						<div class="comment">
 							<div class="commentHead">
 							</div>
-							<form method="POST" class="submitForm" enctype="multipart/form-data" onsubmit="return validate()">
+							<form method="GET" action="./PHP/addComment.php"></form>
 							</form>
 						</div>
 					*/
@@ -388,7 +373,27 @@
 					commentSubmission.append(parentHidden);
 					commentSubmission.append(postHidden);
 
+					if ((JSON.parse('<?php echo json_encode($_SESSION["isAdmin"]); ?>') || JSON.parse('<?php echo json_encode($_SESSION["userID"]); ?>') == userID) && JSON.parse('<?php echo json_encode($_SESSION["userID"]); ?>') != -1) {
 
+						/*<button type="submit" ></button>*/
+						let adminButton = document.createElement("button");
+						adminButton.setAttribute('type', 'button');
+						adminButton.setAttribute('id', 'commentID' + commentID);
+						adminButton.innerHTML = 'Delete Comment';
+
+						infoDiv.append(adminButton);
+
+						//After a timeout add the event listener so that there is an object to add to.
+						setTimeout(function () {
+							let deleteButton = document.getElementById('commentID' + commentID);
+							deleteButton.addEventListener('click', function () {
+								//When we delete the post, after a short delay we reprint the feed so that the post no longer is there.
+								deleteComment(commentID);
+								setTimeout(function () { writeComments(postID); }, 500);
+								return;
+							});
+						}, 100);
+					}
 
 					return classDiv;
 				}

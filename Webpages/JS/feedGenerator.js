@@ -439,21 +439,14 @@ function buildPostDiv(votes, postID, title, sliceID, sliceName, userID, displayN
 		let admin = document.createElement("li");
 		admin.setAttribute('id', 'admin');
 
-		/*<form method = "GET" action = "deletePost.php"></form> */
-		let adminForm = document.createElement("form");
-		adminForm.setAttribute('method', 'GET');
-		adminForm.setAttribute('action', 'deletePost.php');
-
-		/*<button type="submit" name="sliceID" value="~sliceID~">s/~sliceName~</button>*/
+		/*<button type="submit"></button>*/
 		let adminButton = document.createElement("button");
 		adminButton.setAttribute('type', 'button');
 		adminButton.setAttribute('id', 'postID' + postID);
-		adminButton.setAttribute('value', sliceID);
 		adminButton.innerHTML = 'Delete Post';
 
 		lowerList.append(admin);
-		admin.append(adminForm);
-		adminForm.append(adminButton);
+		admin.append(adminButton);
 
 		//After a timeout add the event listener so that there is an object to add to.
 		setTimeout(function () {
@@ -461,7 +454,7 @@ function buildPostDiv(votes, postID, title, sliceID, sliceName, userID, displayN
 			deleteButton.addEventListener('click', function () {
 				//When we delete the post, after a short delay we reprint the feed so that the post no longer is there.
 				deletePost(postID);
-				setTimeout(function () { printFeed(getCall, isAdmin); }, 500);
+				setTimeout(function () { printFeed(getCall, isAdmin); alert('Post Deleted'); }, 500);
 				return;
 			});
 		}, 100);

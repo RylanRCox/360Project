@@ -1,5 +1,5 @@
-function deleteComment(commentID) {
-    let results = $.get("php/deleteComment.php?commentID=" + commentID);
+function deleteComment(id) {
+    let results = $.post("PHP/deleteComment.php", { commentID: id });
     results.done(function (data) {
         console.log(data);
     });

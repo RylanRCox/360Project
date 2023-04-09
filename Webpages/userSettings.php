@@ -85,6 +85,18 @@ if($_SESSION['userID'] == -1){
                 </p>
             </fieldset>
         </form>
+        <form method="post" id = 'bioForm'>
+            <fieldset>
+                <legend>Update User Biography</legend>
+                <p class="inputField">
+                    <label>Enter your new user bio:</label>
+                    <textarea  style = "width:80%; resize:none; height:8em;" form="bioForm" maxlength="200" name="userBio" id = 'userBio' placeholder="userBio" class="textfield" required ></textarea>
+                </p>
+                <p class="inputField">
+                    <input type="submit" value="Change User Bio" class="submitButton" />
+                </p>
+            </fieldset>
+        </form>
         <form method="post" enctype="multipart/form-data" id = "userImageForm" onsubmit="return false;" action="PHP/updateUserImage.php">
         <fieldset>
             <input type="hidden" name = "MAX_FILE_SIZE" value = "1000000"/>
@@ -153,6 +165,26 @@ $(document).ready(function (e) {
   $.ajax({
                 type: "POST",
                 url: "PHP/updateDisplayName.php",
+                data: formData,
+                dataType: "json",
+                encode: true,
+                }).done(function(data) {
+                        alert(data['message']);
+                        }).fail(function(data){
+                            console.log(data);
+                        }); 
+ }));
+
+ $("#bioForm").on('submit',(function(e) {
+    
+  e.preventDefault();
+  let formData = {
+            userBio: $('#userBio').val(),
+            };
+  console.log(formData);
+  $.ajax({
+                type: "POST",
+                url: "PHP/updateUserBio.php",
                 data: formData,
                 dataType: "json",
                 encode: true,

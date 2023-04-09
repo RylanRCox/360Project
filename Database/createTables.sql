@@ -5,6 +5,7 @@ CREATE TABLE users (
 	displayName		VARCHAR(25) NOT NULL,
 	profileImage	LONGBLOB DEFAULT NULL,
 	imageType		VARCHAR(35) DEFAULT NULL, 
+	userBio			varchar(200) DEFAULT NULL,
 	isAdmin			BOOLEAN DEFAULT FALSE,
 	dateCreated		TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (userID)
@@ -44,7 +45,7 @@ CREATE TABLE comments (
 	FOREIGN KEY (userID) REFERENCES users(userID) ON DELETE NO ACTION ON UPDATE CASCADE
 );
 
-INSERT INTO users VALUES (-1,"deletedemail","NOONESHOULDEVERUSETHISEVER$!@*#!*!*#!)(*!&!@*9832519823498101283489!(@*#()*!@*$(!%*(&!@(*&!@#(*!@#*8932982140981239048!(*!@#*(!@&(*!@(*!@*","deleted","none.png",DEFAULT,DEFAULT,DEFAULT);
+INSERT INTO users VALUES (-1,"deletedemail","NOONESHOULDEVERUSETHISEVER$!@*#!*!*#!)(*!&!@*9832519823498101283489!(@*#()*!@*$(!%*(&!@(*&!@#(*!@#*8932982140981239048!(*!@#*(!@&(*!@(*!@*","deleted","none.png",DEFAULT,DEFAULT,DEFAULT,DEFAULT);
 
 INSERT INTO slices VALUES (DEFAULT,"Sourdough", NULL, NULL);
 INSERT INTO slices VALUES (DEFAULT,"Flatbread", NULL, NULL);

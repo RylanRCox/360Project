@@ -399,11 +399,17 @@
 				}
 				window.onload = (event) => {
 					let postID = JSON.parse('<?php echo json_encode($postID); ?>');
+
 					let postSender = document.getElementById('postID');
+
 					postSender.setAttribute('value', postID);
+
 					let parentSender = document.getElementById('commentParent');
+
 					parentSender.setAttribute('value', null);
+
 					console.log("Is the request real: " + JSON.parse('<?php echo json_encode($realRequest); ?>'));
+
 					if(JSON.parse('<?php echo json_encode($realRequest); ?>')){
 						getPostData(postID);
 						writeComments(postID);

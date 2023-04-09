@@ -1,3 +1,44 @@
+function pageIndexing(count, index, postCount, cap, getCall, isAdmin) {
+	if (index != 0) {
+
+		let prevLink = document.createElement('button');
+		prevLink.setAttribute('id', 'prevButton');
+		prevLink.innerHTML = 'prev';
+		$('#prev').empty();
+		$('#prev').prepend(prevLink);
+
+		setTimeout(function () {
+			prevLink.addEventListener('click', function () {
+				count.innerHTML = (index - 10);
+				count.hidden = true;
+				printFeed(getCall, isAdmin)
+			});
+		}, 500);
+
+
+	} else {
+		$('#prev').empty();
+	}
+	if (index + 10 <= postCount) {
+
+		let nextLink = document.createElement('button');
+		nextLink.setAttribute('id', 'nextButton');
+		nextLink.innerHTML = 'next';
+		$('#next').empty();
+		$('#next').append(nextLink);
+
+		setTimeout(function () {
+			nextLink.addEventListener('click', function () {
+				count.innerHTML = (index + 10);
+				count.hidden = true;
+				printFeed(getCall, isAdmin)
+			});
+		}, 500);
+
+	} else {
+		$('#next').empty();
+	}
+}
 function printFeed(getCall, isAdmin) {
 
 	//The first thing we do is we clear the feed, this avoids printing duplicates
@@ -7,15 +48,20 @@ function printFeed(getCall, isAdmin) {
 		console.log(data);
 		//We parse our data into a JS array.
 		let postArray = JSON.parse(data);
+		let postCount = postArray.length;
+
+		let count = document.getElementById('postCount');
+		let countVals = count.innerHTML;
+		let index = parseInt(countVals);
+		
 
 		//Now we generate our cap, this posts maximum 10 values, but won't throw and error if we have less.
-		let iterationCap = 10;
-		if (postArray.length < iterationCap) {
-			iterationCap = postArray.length;
+		let cap = index + 10;
+		if (postArray.length < cap) {
+			cap = postArray.length;
 		}
-
 		//We iterate through our posts.
-		for (let i = 0; i < iterationCap; i++) {
+		for (let i = index; i < cap; i++) {
 
 			//We label our data for readibility.
 			let postID = postArray[i][0];
@@ -29,7 +75,7 @@ function printFeed(getCall, isAdmin) {
 			let displayName = postArray[i][8];
 			let commentCount = postArray[i][9];
 
-			
+
 			//Determine whether or not the post has an image attached.
 			console.log(postID);
 
@@ -44,9 +90,12 @@ function printFeed(getCall, isAdmin) {
 
 			buildPostDiv(votes, postID, title, sliceID, sliceName, userID, displayName, days, count, isAdmin, getCall);
 		}
+		pageIndexing(count, index, postCount, cap, getCall, isAdmin);
 	});
 	results.fail(function (jqXHR) { console.log("Error: " + jqXHR.status); });
-	results.always(function () { console.log("Feed Update"); });
+	results.always(function () {
+		console.log("Feed Update");
+	});
 }
 function buildPostDiv(votes, postID, title, sliceID, sliceName, userID, displayName, days, commentCount, isAdmin, getCall) {
 

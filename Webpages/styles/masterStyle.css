@@ -356,36 +356,6 @@ a:active {
 	height: 70%;
 }
 
-/* Navigation Buttons*/
-.feednav {
-	margin-top: -3.5em;
-	float: left;
-	position: absolute;
-	width: 20em
-}
-
-	.feednav ul {
-		list-style-type: none;
-	}
-
-		.feednav ul li a {
-			list-style-type: none;
-			z-index: 66;
-		}
-
-		.feednav ul a {
-			float: left;
-			padding: .6em;
-			background-color: #340a68;
-			border: .1em solid #410e80;
-			border-radius: 1em;
-			margin: 0em 1em 0em 1em;
-		}
-
-#prev {
-	margin-left: -4.5em;
-}
-
 /*Slice specific stuff*/
 .slice-banner {
 	background-image: url(../images/carbrolls.jpg);
@@ -650,3 +620,35 @@ fieldset {
 	float: right;
 	bottom: 0;
 }
+
+/*FeedNav*/
+#prevNext {
+	padding: 0;
+	display: flex;
+	width: 100%;
+	justify-content: center;
+}
+#next{
+	margin-left: auto;
+}
+#prev {
+	margin-right: auto;
+}
+.feednav {
+	position: absolute;
+	width: 5em;
+	margin-top: -3.5em;
+	margin-left: -5em;
+	display: inline-block;
+	background: none;
+}
+
+	.feednav ul {
+		list-style-type: none;
+	}
+	.feednav button {
+		margin: 0;
+		float: none;
+		background-color: deepskyblue;
+		border-radius: 0.5em;
+	}

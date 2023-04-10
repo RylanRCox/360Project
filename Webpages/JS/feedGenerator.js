@@ -39,7 +39,7 @@ function pageIndexing(count, index, postCount, cap, getCall, isAdmin) {
 		$('#next').empty();
 	}
 }
-function printFeed(getCall, isAdmin) {
+function printFeed(getCall, isAdmin, activeUser) {
 
 	//The first thing we do is we clear the feed, this avoids printing duplicates
 	$('.feed').empty();
@@ -90,7 +90,29 @@ function printFeed(getCall, isAdmin) {
 
 			buildPostDiv(votes, postID, title, sliceID, sliceName, userID, displayName, days, count, isAdmin, getCall);
 		}
+
 		pageIndexing(count, index, postCount, cap, getCall, isAdmin);
+		setTimeout(function () {
+			let breadVotes = document.getElementsByClassName('breadvote');
+			for (let i = 0; i < breadVotes.length; i++) {
+				
+				breadVotes[i].addEventListener('click', function () {
+					if (userID != -1) {
+						let results = $.post('./PHP/likePost.php', { postID: breadVotes[i].getAttribute('value'), userID: activeUser });
+						results.done(function (data) {
+							console.log(data);
+						});
+						results.fail(function (jqXHR) { console.log("Error: " + jqXHR.status); });
+						results.always(function () {
+							console.log('Post id ' + breadVotes[i].getAttribute('value') + ' by user id ' + activeUser);
+						});
+					} else {
+						alert('Please sign in to like posts or comments');
+					}
+					
+				});
+			}
+		}, 500);
 	});
 	results.fail(function (jqXHR) { console.log("Error: " + jqXHR.status); });
 	results.always(function () {
@@ -126,12 +148,13 @@ function buildPostDiv(votes, postID, title, sliceID, sliceName, userID, displayN
 	let breadButtonUp = document.createElement("button");
 	breadButtonUp.setAttribute('type', 'submit');
 	breadButtonUp.setAttribute('class', 'breadvote');
+	breadButtonUp.setAttribute('value', postID);
 
-	/*<button type="submit" id="breadvote"></button> */
+	/*<button type="submit" id="breadvote"></button> 
 	let breadButtonDown = document.createElement("button");
 	breadButtonDown.setAttribute('type', 'submit');
 	breadButtonDown.setAttribute('class', 'breadvote');
-
+	*/
 	/*<p>~votes~</p> */
 	let voteCount = document.createElement("p")
 	voteCount.innerHTML = votes;
@@ -149,9 +172,6 @@ function buildPostDiv(votes, postID, title, sliceID, sliceName, userID, displayN
 					<img src = "images/breadstick.png" class = "breadStickImage" alt = "breadStick"/>
 				</button> 
 				<p>~votes~</p>
-				<button type="submit" id="breadvote">
-					<img src = "images/breadstick.png" class = "breadStickImage" alt = "breadStick"/>
-				</button>
 			</div>
 			<div class = "post-content">
 			</div>
@@ -159,9 +179,9 @@ function buildPostDiv(votes, postID, title, sliceID, sliceName, userID, displayN
 	*/
 	votesDiv.append(breadButtonUp);
 	votesDiv.append(voteCount);
-	votesDiv.append(breadButtonDown);
+	//votesDiv.append(breadButtonDown);
 	breadButtonUp.append(breadStickImage);
-	breadButtonDown.append(breadStickImage.cloneNode(true));
+	//breadButtonDown.append(breadStickImage.cloneNode(true));
 
 	/*<img src = "~image~" class = "post-image" alt = "Post Content"/> */
 	let postImage = document.createElement("img");

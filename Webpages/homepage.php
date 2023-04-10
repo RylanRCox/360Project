@@ -88,6 +88,7 @@
 						let topButton = document.getElementById('topButton');
 
 						if($('#logout')){
+							$('#logout').children().first().css({'cursor': 'pointer'});;
 							$('#logout').on("click",function(){
 								$.get("PHP/logOut.php");
 								

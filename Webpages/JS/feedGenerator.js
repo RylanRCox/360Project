@@ -506,6 +506,10 @@ function buildPostDiv(votes, postID, title, sliceID, sliceName, userID, displayN
 	hideLink.setAttribute('value', postID);
 	hideLink.innerHTML = 'Hide';
 
+	/*<a href="Comments.php">COMMENTCOUNT Comments</a> */
+	let share = document.createElement("a");
+	share.innerHTML = 'Share';
+
 	/* INSERT BUTTONS INTO EACH FORM
 		<div class = "post">
 			<div class = "votes">

@@ -15,6 +15,7 @@ if($_SESSION['userID'] == -1){
     <title>Breadit - Post Creator</title>
     <link rel="stylesheet" href="styles/masterStyle.css">
     <script type="text/javascript" src="JS/postPageScript.js"></script>
+    <script type="text/javascript" src="JS/displayUser.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <body>

@@ -448,20 +448,19 @@ function buildPostDiv(votes, postID, title, sliceID, sliceName, userID, displayN
 
 	/*<li> </li> */
 	let hide = document.createElement("li");
+	
 
 	/*<a href="Comments.php">COMMENTCOUNT Comments</a> */
 	let commentsLink = document.createElement("a");
-	commentsLink.setAttribute('href', 'Comments.php');
+	commentsLink.setAttribute('href', 'post.php?postID=' + postID);
 	commentsLink.innerHTML = commentCount + ' Comments';
 
 	/*<a href="Share.php">Share</a> */
 	let shareLink = document.createElement("a");
-	shareLink.setAttribute('href', 'Share.php');
 	shareLink.innerHTML = 'Share';
 
 	/*<a href="Hide.php">Hide</a> */
 	let hideLink = document.createElement("a");
-	hideLink.setAttribute('href', 'Hide.php');
 	hideLink.innerHTML = 'Hide';
 
 	/* INSERT BUTTONS INTO EACH FORM
@@ -510,6 +509,15 @@ function buildPostDiv(votes, postID, title, sliceID, sliceName, userID, displayN
 	*/
 	lowerList.append(comments);
 	lowerList.append(share);
+	share.style.cursor = "pointer";
+	share.addEventListener("click",function(){
+		navigator.clipboard.writeText("localhost/360Project/Webpages/post.php?postID="+postID);
+	})
+	hide.style.cursor = "pointer";
+	hide.addEventListener("click",function(){
+		alert('test');
+		postDiv.style.display = 'none';
+	})
 	lowerList.append(hide);
 	comments.append(commentsLink);
 	share.append(shareLink);

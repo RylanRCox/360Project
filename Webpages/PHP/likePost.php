@@ -34,9 +34,10 @@
 				exit($output);
 			} else {
 				if($postLike){
-
+					
 					$sql = "SELECT * FROM voted WHERE postID = ? AND userID = ?";
 					$stmt = mysqli_prepare($conn, $sql);
+					
 					mysqli_stmt_bind_param($stmt, 'ii', $postID, $userID);
 					mysqli_stmt_execute($stmt);
 					if(mysqli_stmt_fetch($stmt)){
@@ -45,18 +46,23 @@
 					} else {
 						$stmt->close();
 						$sql = "UPDATE posts SET votes = votes + 1 WHERE postID = ?";
+						
 						$stmt = mysqli_prepare($conn, $sql);
+						
 						mysqli_stmt_bind_param($stmt, 'i', $postID);
-
+						
 						mysqli_stmt_execute($stmt);
 						$stmt->close();
-
+						
 						$sql = "INSERT INTO voted VALUES(default, ?, null, ?)";
 				
 						$stmt = mysqli_prepare($conn, $sql);
+						
 						mysqli_stmt_bind_param($stmt, 'ii', $postID, $userID);
-						$result = mysqli_stmt_execute($stmt) or die(mysqli_stmt_error($stmt));
+						
+						$result = mysqli_stmt_execute($stmt);
 						$stmt->close();
+						
 					}
 				}else if($commentLike){
 

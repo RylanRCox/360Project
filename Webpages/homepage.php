@@ -101,7 +101,6 @@
 						
 						window.setInterval(function(){
 							getCall = './PHP/getFeed.php?sortBy=' + sortBy;
-							activeUser = JSON.parse("<?php echo json_encode($_SESSION['userID']); ?>");
 							printFeed(getCall, isAdmin, activeUser);
 						}, 30000);
 					};

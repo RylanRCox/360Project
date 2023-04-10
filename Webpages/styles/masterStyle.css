@@ -275,7 +275,7 @@ li.dropdown {
 }
 
 
-.breadvote {
+.breadvote, #postbreadvote {
 	background: none;
 	color: inherit;
 	border: none;

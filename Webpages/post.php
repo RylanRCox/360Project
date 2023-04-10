@@ -100,7 +100,22 @@
 							fig.append(postImage);
 							$(".post-body").append(fig);
 						}
-						
+
+						let activeUser = JSON.parse("<?php echo json_encode($_SESSION['userID']); ?>");
+						let breadVote = document.getElementById('postbreadvote');
+						let results = $.post('./PHP/isLiked.php', { pID: postID, uID: activeUser });
+						results.done(function (data) {
+							console.log(data);
+							if (data == 'true') {
+								breadVote.style.backgroundColor = 'deepskyblue';
+								breadVote.style.borderRadius = '1em';
+								breadVote.style.width = '1em';
+								breadVote.style.height = '1em';
+							}
+						});
+						results.fail(function (jqXHR) { console.log("Error: " + jqXHR.status); });
+						results.always(function () {
+						});
 
 						$("#voteCount").empty();
 						$("#voteCount").append(data[2]);
@@ -113,6 +128,7 @@
 						} else {
 							days = days + " days";
 						}
+
 						$("#slice").empty();
 						$("#slice").append('<form method = "GET" action = "slice.php"><button type = "submit" name = "sliceID" value = "' + data[7] + '">s/' + data[4] + '</button></form>');
 						$("#usertime").empty();
@@ -157,6 +173,7 @@
 				}
 
 				function writeComments(postID){
+					let activeUser = JSON.parse("<?php echo json_encode($_SESSION['userID']); ?>");
 					let results = $.get("php/getComments.php?postID=" + postID);
 					results.done(function(data){
 						data = JSON.parse(data);
@@ -167,6 +184,28 @@
 
 					results.fail(function(jqXHR) { console.log("Error: "+jqXHR.status);});
 					results.always(function(){console.log("Done generating comments");});
+					setTimeout(function () {
+						let breadVotes = document.getElementsByClassName('breadvote');
+						for (let i = 0; i < breadVotes.length; i++) {
+				
+							breadVotes[i].addEventListener('click', function () {
+								if (activeUser != -1) {
+
+									let results = $.post('./PHP/likePost.php', { commentID: breadVotes[i].getAttribute('value'), userID: activeUser });
+									results.done(function (data) {
+										console.log(data);
+										writeComments(postID)
+									});
+									results.fail(function (jqXHR) { console.log("Error: " + jqXHR.status); });
+									results.always(function () {
+									});
+								} else {
+									alert('Please sign in to like posts or comments');
+								}
+					
+							});
+						}
+					}, 500);
 				}
 
 				function recurssiveGrab(commentArray, parentID, layer, postID, parentElement) {
@@ -239,11 +278,22 @@
 					let breadButtonUp = document.createElement("button");
 					breadButtonUp.setAttribute('type', 'submit');
 					breadButtonUp.setAttribute('class', 'breadvote');
+					breadButtonUp.setAttribute('value', commentID);
 
-					/*<button type="submit" id="breadvote"></button> */
-					let breadButtonDown = document.createElement("button");
-					breadButtonDown.setAttribute('type', 'submit');
-					breadButtonDown.setAttribute('class', 'breadvote');
+					let activeUser = JSON.parse("<?php echo json_encode($_SESSION['userID']); ?>");
+					let results = $.post('./PHP/isLiked.php', { cID: commentID, uID: activeUser });
+					results.done(function (data) {
+						console.log(data);
+						if (data == 'true') {
+							breadButtonUp.style.backgroundColor = 'deepskyblue';
+							breadButtonUp.style.borderRadius = '1em';
+							breadButtonUp.style.width = '1em';
+							breadButtonUp.style.height = '1em';
+						}
+					});
+					results.fail(function (jqXHR) { console.log("Error: " + jqXHR.status); });
+					results.always(function () {
+					});
 
 					/*<p>~votes~</p> */
 					let voteCount = document.createElement("p")
@@ -274,9 +324,7 @@
 					headDiv.append(votesDiv);
 					votesDiv.append(breadButtonUp);
 					votesDiv.append(voteCount);
-					votesDiv.append(breadButtonDown);
 					breadButtonUp.append(breadStickImage);
-					breadButtonDown.append(breadStickImage.cloneNode(true));
 
 					/*<div class = "commentInfo"></div> */
 					let infoDiv = document.createElement("div");
@@ -410,6 +458,27 @@
 
 					console.log("Is the request real: " + JSON.parse('<?php echo json_encode($realRequest); ?>'));
 
+					let breadVote = document.getElementById('postbreadvote');
+					let activeUser = JSON.parse("<?php echo json_encode($_SESSION['userID']); ?>");
+
+					setTimeout(function () {
+						breadVote.addEventListener('click', function () {
+							if (activeUser != -1) {
+								let results = $.post('./PHP/likePost.php', { postID: postID, userID: activeUser });
+								results.done(function (data) {
+									console.log(data);
+									getPostData(postID);
+								});
+								results.fail(function (jqXHR) { console.log("Error: " + jqXHR.status); });
+								results.always(function () {
+								});
+							} else {
+								alert('Please sign in to like posts or comments');
+							}
+						});
+					}, 500);
+						
+
 					if(JSON.parse('<?php echo json_encode($realRequest); ?>')){
 						getPostData(postID);
 						writeComments(postID);
@@ -424,9 +493,8 @@
 				<div class = "post">
 					<div class = "post-head"> 
 						<div class = "votes">
-							<button type="submit" class = "breadvote"><img src ="images/breadstick.png" class = "breadStickImage" alt = "UpBread"></button>
+							<button type="submit" id = "postbreadvote"><img src ="images/breadstick.png" class = "breadStickImage" alt = "UpBread"></button>
 							<p id = "voteCount"></p>
-							<button type="submit" class = "breadvote"><img src ="images/breadstick.png" class = "breadStickImage" alt = "UpBread"></button>
 						</div> <!--Close Votes-->
 						<div class = "post-content">
 							<ul>

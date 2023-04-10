@@ -151,8 +151,6 @@ function buildPostDiv(votes, postID, title, sliceID, sliceName, userID, displayN
 	breadButtonUp.setAttribute('type', 'submit');
 	breadButtonUp.setAttribute('class', 'breadvote');
 	breadButtonUp.setAttribute('value', postID);
-
-	console.log(postID + ' ' + activeUser);
 	let results = $.post('./PHP/isLiked.php', { pID: postID, uID: activeUser });
 	results.done(function (data) {
 		console.log(data);

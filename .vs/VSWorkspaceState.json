@@ -3,8 +3,11 @@
     "",
     "\\Database",
     "\\Webpages",
-    "\\Webpages\\styles"
+    "\\Webpages\\JS",
+    "\\Webpages\\PHP",
+    "\\Webpages\\styles",
+    "\\Webpages\\testFiles"
   ],
-  "SelectedNode": "\\Webpages\\slice.php",
+  "SelectedNode": "\\Webpages\\postCreator.php",
   "PreviewInSolutionExplorer": false
 }

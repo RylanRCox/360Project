@@ -1,4 +1,4 @@
-function pageIndexing(count, index, postCount, cap, getCall, isAdmin) {
+function pageIndexing(count, index, postCount, cap, getCall, isAdmin, activeUser) {
 	if (index != 0) {
 
 		let prevLink = document.createElement('button');
@@ -11,7 +11,7 @@ function pageIndexing(count, index, postCount, cap, getCall, isAdmin) {
 			prevLink.addEventListener('click', function () {
 				count.innerHTML = (index - 10);
 				count.hidden = true;
-				printFeed(getCall, isAdmin)
+				printFeed(getCall, isAdmin, activeUser);
 			});
 		}, 500);
 
@@ -31,7 +31,7 @@ function pageIndexing(count, index, postCount, cap, getCall, isAdmin) {
 			nextLink.addEventListener('click', function () {
 				count.innerHTML = (index + 10);
 				count.hidden = true;
-				printFeed(getCall, isAdmin)
+				printFeed(getCall, isAdmin, activeUser);
 			});
 		}, 500);
 
@@ -40,7 +40,7 @@ function pageIndexing(count, index, postCount, cap, getCall, isAdmin) {
 	}
 }
 function printFeed(getCall, isAdmin, activeUser) {
-
+	console.log('Active user: ' + activeUser);
 	//The first thing we do is we clear the feed, this avoids printing duplicates
 	$('.feed').empty();
 	let results = $.get(getCall);
@@ -87,26 +87,24 @@ function printFeed(getCall, isAdmin, activeUser) {
 			if (commentCount !== null) {
 				count = commentCount;
 			}
-
-			buildPostDiv(votes, postID, title, sliceID, sliceName, userID, displayName, days, count, isAdmin, getCall);
+			buildPostDiv(votes, postID, title, sliceID, sliceName, userID, displayName, days, count, isAdmin, getCall, activeUser);
 		}
 
-		pageIndexing(count, index, postCount, cap, getCall, isAdmin);
+		pageIndexing(count, index, postCount, cap, getCall, isAdmin, activeUser);
 		setTimeout(function () {
 			let breadVotes = document.getElementsByClassName('breadvote');
 			for (let i = 0; i < breadVotes.length; i++) {
 				
 				breadVotes[i].addEventListener('click', function () {
 					if (activeUser != -1) {
+
 						let results = $.post('./PHP/likePost.php', { postID: breadVotes[i].getAttribute('value'), userID: activeUser });
 						results.done(function (data) {
 							console.log(data);
-							
+							printFeed(getCall, isAdmin, activeUser);
 						});
 						results.fail(function (jqXHR) { console.log("Error: " + jqXHR.status); });
 						results.always(function () {
-							console.log('Post id ' + breadVotes[i].getAttribute('value') + ' by user id ' + activeUser);
-							printFeed(getCall, isAdmin, activeUser);
 						});
 					} else {
 						alert('Please sign in to like posts or comments');
@@ -121,7 +119,7 @@ function printFeed(getCall, isAdmin, activeUser) {
 		console.log("Feed Update");
 	});
 }
-function buildPostDiv(votes, postID, title, sliceID, sliceName, userID, displayName, days, commentCount, isAdmin, getCall) {
+function buildPostDiv(votes, postID, title, sliceID, sliceName, userID, displayName, days, commentCount, isAdmin, getCall, activeUser) {
 
 	/*<div class = "post"></div> */
 	let postDiv = document.createElement("div");
@@ -146,11 +144,28 @@ function buildPostDiv(votes, postID, title, sliceID, sliceName, userID, displayN
 	postDiv.append(votesDiv);
 	postDiv.append(postContent);
 
+	
+
 	/*<button type="submit" id="breadvote"></button> */
 	let breadButtonUp = document.createElement("button");
 	breadButtonUp.setAttribute('type', 'submit');
 	breadButtonUp.setAttribute('class', 'breadvote');
 	breadButtonUp.setAttribute('value', postID);
+
+	console.log(postID + ' ' + activeUser);
+	let results = $.post('./PHP/isLiked.php', { pID: postID, uID: activeUser });
+	results.done(function (data) {
+		console.log(data);
+		if (data == 'true') {
+			breadButtonUp.style.backgroundColor = 'deepskyblue';
+			breadButtonUp.style.borderRadius = '1em';
+			breadButtonUp.style.width = '1em';
+			breadButtonUp.style.height = '1em';
+		}
+	});
+	results.fail(function (jqXHR) { console.log("Error: " + jqXHR.status); });
+	results.always(function () {
+	});
 
 	/*<button type="submit" id="breadvote"></button> 
 	let breadButtonDown = document.createElement("button");

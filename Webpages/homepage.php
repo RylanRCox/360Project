@@ -85,18 +85,23 @@
 						printFeed(getCall, isAdmin, activeUser);
 						let newButton = document.getElementById('newButton');
 						let topButton = document.getElementById('topButton');
+
 						newButton.addEventListener('click', function(){
 							sortBy = 0;
 							getCall = './PHP/getFeed.php?sortBy=' + sortBy;
+							
 							printFeed(getCall, isAdmin, activeUser);
 						});
 						topButton.addEventListener('click', function(){
 							sortBy = 1;
 							getCall = './PHP/getFeed.php?sortBy=' + sortBy;
+							
 							printFeed(getCall, isAdmin, activeUser);
 						});
+						
 						window.setInterval(function(){
 							getCall = './PHP/getFeed.php?sortBy=' + sortBy;
+							activeUser = JSON.parse("<?php echo json_encode($_SESSION['userID']); ?>");
 							printFeed(getCall, isAdmin, activeUser);
 						}, 30000);
 					};

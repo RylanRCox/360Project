@@ -41,11 +41,12 @@
 			<?php
 				if($_SESSION['userID'] != -1){
 					echo '<li id = prefs><a href ="userSettings.php">Settings</a></li>';
-					echo '<li id = logout><a href ="signOut.php">Logout</a></li>';
+					echo '<li id = logout><a>Logout</a></li>';
 				} else {
-					echo '<li id = logout><a href ="signIn.php">Login</a></li>';
+					echo '<li id = logIn><a href ="signIn.php">Login</a></li>';
 				}
 			?>
+			
 			
 			
 		</ul>
@@ -86,6 +87,20 @@
 						let newButton = document.getElementById('newButton');
 						let topButton = document.getElementById('topButton');
 
+						if($('#logout')){
+							$('#logout').children().first().css({'cursor': 'pointer'});;
+							$('#logout').on("click",function(){
+								$.get("PHP/logOut.php");
+								
+								const myTimeout = setTimeout(logout, 500);
+								function logout(){
+									$('#prefs').remove();
+									$('#logout').html('<a href="signIn.php">Login</a>');
+									$('#logout').attr("id","signUp");
+								}
+							})
+						}
+
 						newButton.addEventListener('click', function(){
 							sortBy = 0;
 							getCall = './PHP/getFeed.php?sortBy=' + sortBy;
@@ -95,7 +110,6 @@
 						topButton.addEventListener('click', function(){
 							sortBy = 1;
 							getCall = './PHP/getFeed.php?sortBy=' + sortBy;
-							
 							printFeed(getCall, isAdmin, activeUser);
 						});
 						
@@ -103,7 +117,11 @@
 							getCall = './PHP/getFeed.php?sortBy=' + sortBy;
 							printFeed(getCall, isAdmin, activeUser);
 						}, 30000);
+
+
 					};
+
+					
 				</script>
 			</div>
 			<div class = "feednav">

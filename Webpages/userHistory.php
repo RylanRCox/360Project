@@ -107,12 +107,16 @@
 						}
 					}
 					function displayUser(userID){
-						let results = $.get("php/getUser.php?userID=" + userID);
+						let results = $.get("PHP/getUser.php?userID=" + userID);
 						results.done(function(data){
 							let postArray = JSON.parse(data);
+							console.log(postArray);
 							$('#displayerName').empty();
 							$('#displayerName').append('<p>' + postArray[0] + '</p>');
 							$('#profilePicture').attr('src', 'PHP/image.php?table=users&id=' + userID);
+							$('#userBio').html(postArray[1]);
+							let histLink = $('#commentHistory');
+							histLink.attr("href","commentHistory.php?userID=" + userID)
 						});
 						results.fail(function(jqXHR) { console.log("Error: "+jqXHR.status);});
 						results.always(function(){console.log("Feed Update");});
@@ -165,7 +169,9 @@
 	<div class="user-container">
 		<div id="submission">
 			<p id = "displayerName">Display Name</p>
+			<p><a id = "commentHistory">View History</a></p>
 			<img id="profilePicture" alt="Profile Picture">
+			<p id = "userBio"> userBio</p>
 			<div id ="deleteHolder">
 			</div>
 		</div>

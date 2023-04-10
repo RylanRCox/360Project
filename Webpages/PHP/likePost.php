@@ -2,6 +2,7 @@
     $realRequest = false;
     $postLike = false;
     $commentLike = false;
+    
     if ($_SERVER["REQUEST_METHOD"] == "POST"){
         if(isset($_POST["postID"]) && isset($_POST["userID"])){
             $postID = $_POST["postID"];
@@ -21,19 +22,22 @@
     }
     if($realRequest){
         try{
+            
             include('credentials.php');
 
             $mysqli = new mysqli($servername, $username, $password, $dbname);
-
-            $conn = $mysqli->prepare("UPDATE ? SET votes = votes + 1 WHERE ? = ?");
+            
             if($postLike){
-                $conn->bind_param('sss', 'posts', 'postID', $postID);
+                $stmt = $mysqli->prepare("UPDATE posts SET votes = votes + 1 WHERE postID = ?");
+                $stmt->bind_param('i', $postID);
             }else if($commentLike){
-                $conn->bind_param('sss', 'comments', 'commentID', $commentID);
+                $stmt = $mysqli->prepare("UPDATE comments SET votes = votes + 1 WHERE commentID = ?");
+                $stmt->bind_param('i', $commentID);
             }
-			
-			$conn->execute();
-            $conn->close();
+
+			$stmt->execute();
+            $stmt->close();
+            
 
         }catch(mysqli_sql_exception $e){
             echo json_encode($e);

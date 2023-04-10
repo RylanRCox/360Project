@@ -125,6 +125,7 @@
 						}
 						displayUser(userID);
 						let isAdmin = JSON.parse("<?php echo json_encode($_SESSION['isAdmin']); ?>");
+						let activeUser = JSON.parse("<?php echo json_encode($_SESSION['userID']); ?>");
 						let getCall = './PHP/getFeed.php?userID=' + userID + '&sortBy=' + sortBy;
 						let countList = document.getElementById('countList');
 						let count = document.createElement('p');
@@ -132,22 +133,22 @@
 						count.innerHTML = 0;
 						count.hidden = true;
 						countList.append(count);
-						printFeed(getCall, isAdmin);
+						printFeed(getCall, isAdmin, activeUser);
 						let newButton = document.getElementById('newButton');
 						let topButton = document.getElementById('topButton');
 						newButton.addEventListener('click', function(){
 							sortBy = 0;
 							getCall = './PHP/getFeed.php?userID=' + userID + '&sortBy=' + sortBy;
-							printFeed(getCall, isAdmin);
+							printFeed(getCall, isAdmin, activeUser);
 						});
 						topButton.addEventListener('click', function(){
 							sortBy = 1;
 							getCall = './PHP/getFeed.php?userID=' + userID + '&sortBy=' + sortBy;
-							printFeed(getCall, isAdmin);
+							printFeed(getCall, isAdmin, activeUser);
 						});
 						window.setInterval(function(){
 							getCall = './PHP/getFeed.php?userID=' + userID + '&sortBy=' + sortBy;
-							printFeed(getCall, isAdmin);
+							printFeed(getCall, isAdmin, activeUser);
 						}, 30000);
 					};
 				</script>

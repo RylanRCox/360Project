@@ -97,6 +97,7 @@
 					window.onload = (event) => {
 						let sortBy = 0;
 						let isAdmin = JSON.parse("<?php echo json_encode($_SESSION['isAdmin']); ?>");
+						let activeUser = JSON.parse("<?php echo json_encode($_SESSION['userID']); ?>");
 						let sliceID = JSON.parse("<?php echo $sliceID; ?>");
 						let sliceImage = document.getElementById('headerImage');
 						sliceImage.setAttribute('src', './images/sliceImage' + sliceID + '.jpg');
@@ -120,22 +121,22 @@
 						count.innerHTML = 0;
 						count.hidden = true;
 						countList.append(count);
-						printFeed(getCall, isAdmin);
+						printFeed(getCall, isAdmin, activeUser);
 						let newButton = document.getElementById('newButton');
 						let topButton = document.getElementById('topButton');
 						newButton.addEventListener('click', function(){
 							sortBy = 0;
 							getCall = './PHP/getFeed.php?sliceID=' + sliceID + '&sortBy=' + sortBy;
-							printFeed(getCall, isAdmin);
+							printFeed(getCall, isAdmin, activeUser);
 						});
 						topButton.addEventListener('click', function(){
 							sortBy = 1;
 							getCall = './PHP/getFeed.php?sliceID=' + sliceID + '&sortBy=' + sortBy;
-							printFeed(getCall, isAdmin);
+							printFeed(getCall, isAdmin, activeUser);
 						});
 						window.setInterval(function(){
 							getCall = './PHP/getFeed.php?sliceID=' + sliceID + '&sortBy=' + sortBy;
-							printFeed(getCall, isAdmin);
+							printFeed(getCall, isAdmin, activeUser);
 						}, 30000);
 					};
 				</script>

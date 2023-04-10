@@ -97,14 +97,16 @@ function printFeed(getCall, isAdmin, activeUser) {
 			for (let i = 0; i < breadVotes.length; i++) {
 				
 				breadVotes[i].addEventListener('click', function () {
-					if (userID != -1) {
+					if (activeUser != -1) {
 						let results = $.post('./PHP/likePost.php', { postID: breadVotes[i].getAttribute('value'), userID: activeUser });
 						results.done(function (data) {
 							console.log(data);
+							
 						});
 						results.fail(function (jqXHR) { console.log("Error: " + jqXHR.status); });
 						results.always(function () {
 							console.log('Post id ' + breadVotes[i].getAttribute('value') + ' by user id ' + activeUser);
+							printFeed(getCall, isAdmin, activeUser);
 						});
 					} else {
 						alert('Please sign in to like posts or comments');

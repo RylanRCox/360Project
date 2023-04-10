@@ -93,17 +93,18 @@
 						let content = commentArray[i][1];
 						let votes = commentArray[i][2];
 						let dateCreated = commentArray[i][3];
+						let postTitle = commentArray[i][7];
+						let postID = commentArray[i][8];
 						let displayName = commentArray[i][5];
-						let userID = commentArray[i][6];
-						
-						let currComment = commentPrinter(content, votes, dateCreated, displayName, userID, commentID);
+						console.log(postTitle);
+						console.log('sanity');
+						let currComment = commentPrinter(content, votes, dateCreated, postTitle, postID, commentID, displayName);
 						parentElement.append(currComment);
 						
 					}
 					
 				}
-				function commentPrinter(content, votes, dateCreated, displayName, userID, commentID){
-					console.log(commentID);
+				function commentPrinter(content, votes, dateCreated, postTitle, postID, commentID,displayName){
 
 					const postDate = new Date(dateCreated);
 					const currentDate = new Date();
@@ -215,14 +216,14 @@
 					/*<form method="GET" action="userHistory.php"></form> */
 					let userForm = document.createElement("form");
 					userForm.setAttribute('method', 'GET');
-					userForm.setAttribute('action', 'userHistory.php');
+					userForm.setAttribute('action', 'post.php');
 
 					/*<button type="submit" id="breadvote"></button> */
 					let userSubmitButton = document.createElement("button");
 					userSubmitButton.setAttribute('type', 'submit');
-					userSubmitButton.setAttribute('name', 'userID');
-					userSubmitButton.setAttribute('value', userID);
-					userSubmitButton.innerHTML = 'Post by ' + displayName + ' ' + days + ' ago';
+					userSubmitButton.setAttribute('name', 'postID');
+					userSubmitButton.setAttribute('value', postID);
+					userSubmitButton.innerHTML = 'Comment on ' + postTitle + ' by '+ displayName +' ' + days + ' ago';
 
 					/*<p>CONTENT</p>*/
 					let contentP = document.createElement("p");
@@ -296,7 +297,24 @@
 
 					return classDiv;
 				}
+				function displayUser(userID){
+						let results = $.get("PHP/getUser.php?userID=" + userID);
+						results.done(function(data){
+							let postArray = JSON.parse(data);
+							console.log(postArray);
+							$('#displayerName').empty();
+							$('#displayerName').append('<p>' + postArray[0] + '</p>');
+							$('#profilePicture').attr('src', 'PHP/image.php?table=users&id=' + userID);
+							$('#userBio').html(postArray[1]);
+							let histLink = $('#commentHistory');
+							histLink.attr("href","userHistory.php?userID=" + userID)
+						});
+						results.fail(function(jqXHR) { console.log("Error: "+jqXHR.status);});
+						results.always(function(){console.log("Feed Update");});
+					}
+
 				window.onload = (event) => {
+					displayUser(userID);
 					console.log("Is the request real: " + JSON.parse('<?php echo json_encode($realRequest); ?>'));
 					if(JSON.parse('<?php echo json_encode($realRequest); ?>')){
 						
@@ -322,18 +340,17 @@
 				</div> <!--Close Post-->
 			</div><!--Close Feed-->
 		</div><!--Close feedbox-->	
-		<div class = "side-container" >
-			<div id = "submission">
-				<?php
-					if($_SESSION['userID'] != -1){
-						echo '<p><a href ="postCreator.php" >Submit New Post</a></p>';
-					} else {
-						echo '<a href ="signUp.php">Create an account and post today!</a>';
-					}
-				 ?>
-				<img id = "ad" src ="images/Future.jpg"  alt = "Add for Breadit Premium">
-			</div> <!--Close submission-->
-		</div>	<!--Close side-container-->
+		<div class="user-container">
+		<div id="submission">
+			<p id = "displayerName">Display Name</p>
+			<p><a id = "commentHistory">Back to User Profile
+			</a></p>
+			<img id="profilePicture" alt="Profile Picture">
+			<p id = "userBio"> userBio</p>
+			<div id ="deleteHolder">
+			</div>
+		</div>
+	</div>
 	</div> <!--Close Main content-->
 </body>
 </html>

@@ -1,14 +1,14 @@
 <?php
     $realRequest = false;
 	if ($_SERVER["REQUEST_METHOD"] == "GET"){
-        if( isset($_GET["postID"]) && isset($_GET["postID"])){
+        if( isset($_GET["postID"])){
             $postID = $_GET["postID"];
             $realRequest = true;
         } else {
             echo "<script>alert(\"Missing Post ID\");</script>";
         }
     } else if ($_SERVER["REQUEST_METHOD"] == "POST"){
-        if( isset($_POST["postID"]) && isset($_POST["postID"])){
+        if(isset($_POST["postID"])){
             $postID = $_POST["postID"];
             $realRequest = true;
         } else {

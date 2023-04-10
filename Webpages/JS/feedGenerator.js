@@ -1,5 +1,46 @@
-function printFeed(getCall, isAdmin) {
+function pageIndexing(count, index, postCount, cap, getCall, isAdmin, activeUser) {
+	if (index != 0) {
 
+		let prevLink = document.createElement('button');
+		prevLink.setAttribute('id', 'prevButton');
+		prevLink.innerHTML = 'prev';
+		$('#prev').empty();
+		$('#prev').prepend(prevLink);
+
+		setTimeout(function () {
+			prevLink.addEventListener('click', function () {
+				count.innerHTML = (index - 10);
+				count.hidden = true;
+				printFeed(getCall, isAdmin, activeUser);
+			});
+		}, 500);
+
+
+	} else {
+		$('#prev').empty();
+	}
+	if (index + 10 <= postCount) {
+
+		let nextLink = document.createElement('button');
+		nextLink.setAttribute('id', 'nextButton');
+		nextLink.innerHTML = 'next';
+		$('#next').empty();
+		$('#next').append(nextLink);
+
+		setTimeout(function () {
+			nextLink.addEventListener('click', function () {
+				count.innerHTML = (index + 10);
+				count.hidden = true;
+				printFeed(getCall, isAdmin, activeUser);
+			});
+		}, 500);
+
+	} else {
+		$('#next').empty();
+	}
+}
+function printFeed(getCall, isAdmin, activeUser) {
+	console.log('Active user: ' + activeUser);
 	//The first thing we do is we clear the feed, this avoids printing duplicates
 	$('.feed').empty();
 	let results = $.get(getCall);
@@ -7,15 +48,20 @@ function printFeed(getCall, isAdmin) {
 		console.log(data);
 		//We parse our data into a JS array.
 		let postArray = JSON.parse(data);
+		let postCount = postArray.length;
+
+		let count = document.getElementById('postCount');
+		let countVals = count.innerHTML;
+		let index = parseInt(countVals);
+		
 
 		//Now we generate our cap, this posts maximum 10 values, but won't throw and error if we have less.
-		let iterationCap = 10;
-		if (postArray.length < iterationCap) {
-			iterationCap = postArray.length;
+		let cap = index + 10;
+		if (postArray.length < cap) {
+			cap = postArray.length;
 		}
-
 		//We iterate through our posts.
-		for (let i = 0; i < iterationCap; i++) {
+		for (let i = index; i < cap; i++) {
 
 			//We label our data for readibility.
 			let postID = postArray[i][0];
@@ -29,7 +75,7 @@ function printFeed(getCall, isAdmin) {
 			let displayName = postArray[i][8];
 			let commentCount = postArray[i][9];
 
-			
+
 			//Determine whether or not the post has an image attached.
 			console.log(postID);
 
@@ -41,14 +87,39 @@ function printFeed(getCall, isAdmin) {
 			if (commentCount !== null) {
 				count = commentCount;
 			}
-
-			buildPostDiv(votes, postID, title, sliceID, sliceName, userID, displayName, days, count, isAdmin, getCall);
+			buildPostDiv(votes, postID, title, sliceID, sliceName, userID, displayName, days, count, isAdmin, getCall, activeUser);
 		}
+
+		pageIndexing(count, index, postCount, cap, getCall, isAdmin, activeUser);
+		setTimeout(function () {
+			let breadVotes = document.getElementsByClassName('breadvote');
+			for (let i = 0; i < breadVotes.length; i++) {
+				
+				breadVotes[i].addEventListener('click', function () {
+					if (activeUser != -1) {
+
+						let results = $.post('./PHP/likePost.php', { postID: breadVotes[i].getAttribute('value'), userID: activeUser });
+						results.done(function (data) {
+							console.log(data);
+							printFeed(getCall, isAdmin, activeUser);
+						});
+						results.fail(function (jqXHR) { console.log("Error: " + jqXHR.status); });
+						results.always(function () {
+						});
+					} else {
+						alert('Please sign in to like posts or comments');
+					}
+					
+				});
+			}
+		}, 500);
 	});
 	results.fail(function (jqXHR) { console.log("Error: " + jqXHR.status); });
-	results.always(function () { console.log("Feed Update"); });
+	results.always(function () {
+		console.log("Feed Update");
+	});
 }
-function buildPostDiv(votes, postID, title, sliceID, sliceName, userID, displayName, days, commentCount, isAdmin, getCall) {
+function buildPostDiv(votes, postID, title, sliceID, sliceName, userID, displayName, days, commentCount, isAdmin, getCall, activeUser) {
 
 	/*<div class = "post"></div> */
 	let postDiv = document.createElement("div");
@@ -73,16 +144,32 @@ function buildPostDiv(votes, postID, title, sliceID, sliceName, userID, displayN
 	postDiv.append(votesDiv);
 	postDiv.append(postContent);
 
+	
+
 	/*<button type="submit" id="breadvote"></button> */
 	let breadButtonUp = document.createElement("button");
 	breadButtonUp.setAttribute('type', 'submit');
 	breadButtonUp.setAttribute('class', 'breadvote');
+	breadButtonUp.setAttribute('value', postID);
+	let results = $.post('./PHP/isLiked.php', { pID: postID, uID: activeUser });
+	results.done(function (data) {
+		console.log(data);
+		if (data == 'true') {
+			breadButtonUp.style.backgroundColor = 'deepskyblue';
+			breadButtonUp.style.borderRadius = '1em';
+			breadButtonUp.style.width = '1em';
+			breadButtonUp.style.height = '1em';
+		}
+	});
+	results.fail(function (jqXHR) { console.log("Error: " + jqXHR.status); });
+	results.always(function () {
+	});
 
-	/*<button type="submit" id="breadvote"></button> */
+	/*<button type="submit" id="breadvote"></button> 
 	let breadButtonDown = document.createElement("button");
 	breadButtonDown.setAttribute('type', 'submit');
 	breadButtonDown.setAttribute('class', 'breadvote');
-
+	*/
 	/*<p>~votes~</p> */
 	let voteCount = document.createElement("p")
 	voteCount.innerHTML = votes;
@@ -100,9 +187,6 @@ function buildPostDiv(votes, postID, title, sliceID, sliceName, userID, displayN
 					<img src = "images/breadstick.png" class = "breadStickImage" alt = "breadStick"/>
 				</button> 
 				<p>~votes~</p>
-				<button type="submit" id="breadvote">
-					<img src = "images/breadstick.png" class = "breadStickImage" alt = "breadStick"/>
-				</button>
 			</div>
 			<div class = "post-content">
 			</div>
@@ -110,9 +194,9 @@ function buildPostDiv(votes, postID, title, sliceID, sliceName, userID, displayN
 	*/
 	votesDiv.append(breadButtonUp);
 	votesDiv.append(voteCount);
-	votesDiv.append(breadButtonDown);
+	//votesDiv.append(breadButtonDown);
 	breadButtonUp.append(breadStickImage);
-	breadButtonDown.append(breadStickImage.cloneNode(true));
+	//breadButtonDown.append(breadStickImage.cloneNode(true));
 
 	/*<img src = "~image~" class = "post-image" alt = "Post Content"/> */
 	let postImage = document.createElement("img");
@@ -439,21 +523,14 @@ function buildPostDiv(votes, postID, title, sliceID, sliceName, userID, displayN
 		let admin = document.createElement("li");
 		admin.setAttribute('id', 'admin');
 
-		/*<form method = "GET" action = "deletePost.php"></form> */
-		let adminForm = document.createElement("form");
-		adminForm.setAttribute('method', 'GET');
-		adminForm.setAttribute('action', 'deletePost.php');
-
-		/*<button type="submit" name="sliceID" value="~sliceID~">s/~sliceName~</button>*/
+		/*<button type="submit"></button>*/
 		let adminButton = document.createElement("button");
 		adminButton.setAttribute('type', 'button');
 		adminButton.setAttribute('id', 'postID' + postID);
-		adminButton.setAttribute('value', sliceID);
 		adminButton.innerHTML = 'Delete Post';
 
 		lowerList.append(admin);
-		admin.append(adminForm);
-		adminForm.append(adminButton);
+		admin.append(adminButton);
 
 		//After a timeout add the event listener so that there is an object to add to.
 		setTimeout(function () {
@@ -461,7 +538,7 @@ function buildPostDiv(votes, postID, title, sliceID, sliceName, userID, displayN
 			deleteButton.addEventListener('click', function () {
 				//When we delete the post, after a short delay we reprint the feed so that the post no longer is there.
 				deletePost(postID);
-				setTimeout(function () { printFeed(getCall, isAdmin); }, 500);
+				setTimeout(function () { printFeed(getCall, isAdmin); alert('Post Deleted'); }, 500);
 				return;
 			});
 		}, 100);

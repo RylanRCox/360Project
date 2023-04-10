@@ -39,6 +39,16 @@
 				array_push($arrayOfArrays, $postArray);
 			}
 
+			$conn = $mysqli->prepare("SELECT sliceName, sliceID FROM slices WHERE sliceName LIKE ?");
+			$conn->bind_param('s',$keyWord);
+			$conn->execute();
+			$results = $conn->get_result();
+
+			while($row = $results->fetch_assoc()){
+				$postArray = array('slice', $row["sliceName"], $row["sliceID"]);
+				array_push($arrayOfArrays, $postArray);
+			}
+
 			echo json_encode($arrayOfArrays);
 			$conn->close();
 		}catch(mysqli_sql_exception $e){

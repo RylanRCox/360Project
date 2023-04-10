@@ -96,8 +96,8 @@
 				<script>
 					window.onload = (event) => {
 						let sortBy = 0;
-						let indexStart = 0;
 						let isAdmin = JSON.parse("<?php echo json_encode($_SESSION['isAdmin']); ?>");
+						let activeUser = JSON.parse("<?php echo json_encode($_SESSION['userID']); ?>");
 						let sliceID = JSON.parse("<?php echo $sliceID; ?>");
 						let sliceImage = document.getElementById('headerImage');
 						sliceImage.setAttribute('src', './images/sliceImage' + sliceID + '.jpg');
@@ -114,31 +114,39 @@
 								break;
 						}
 						
-						let getCall = './PHP/getFeed.php?sliceID=' + sliceID;
-						printFeed(getCall, isAdmin);
-						/*
-						This is to be set up at a later date
+						let getCall = './PHP/getFeed.php?sliceID=' + sliceID + '&sortBy=' + sortBy;
+						let countList = document.getElementById('countList');
+						let count = document.createElement('p');
+						count.setAttribute('id', 'postCount');
+						count.innerHTML = 0;
+						count.hidden = true;
+						countList.append(count);
+						printFeed(getCall, isAdmin, activeUser);
 						let newButton = document.getElementById('newButton');
 						let topButton = document.getElementById('topButton');
 						newButton.addEventListener('click', function(){
 							sortBy = 0;
+							getCall = './PHP/getFeed.php?sliceID=' + sliceID + '&sortBy=' + sortBy;
+							printFeed(getCall, isAdmin, activeUser);
 						});
 						topButton.addEventListener('click', function(){
 							sortBy = 1;
-						});*/
-						window.setInterval(function(){printFeed(getCall, isAdmin);}, 30000);
+							getCall = './PHP/getFeed.php?sliceID=' + sliceID + '&sortBy=' + sortBy;
+							printFeed(getCall, isAdmin, activeUser);
+						});
+						window.setInterval(function(){
+							getCall = './PHP/getFeed.php?sliceID=' + sliceID + '&sortBy=' + sortBy;
+							printFeed(getCall, isAdmin, activeUser);
+						}, 30000);
 					};
 				</script>
-				<div class = "feednav">
-					<!--
-					<ul>
-						<li id ="prev"><a href = prev.json>prev</a></li>
-					</ul>
-					<ul>
-						<li id ="next"><a href = next.json>next</a></li>
-					</ul>
-					-->
-				</div>
+			</div>
+			<div class = "feednav">
+				<ul id = 'prevNext'>
+					<li id = "prev" ></li>
+					<li id = "countList" ></li>
+					<li id = "next" ></li>
+				</ul>
 			</div>
 		</div>
 		<div class = "side-container" >

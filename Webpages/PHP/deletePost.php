@@ -1,39 +1,26 @@
 <?php
-    //$sql = "SELECT * FROM posts JOIN slice ON posts.sliceID = slices.sliceID WHERE votes > 20 ORDER BY votes DESC"
-    //postID 0, title 1, content 2, images 3, votes 4, dateCreated 5, sliceID 6, userID 7, sliceName 8, sliceImage 9
     $realRequest = false;
-	if ($_SERVER["REQUEST_METHOD"] == "GET"){
-        if( isset($_GET["postID"]) && isset($_GET["postID"])){
-            $postID = $_GET["postID"];
-            $realRequest = true;
-        } else {
-            echo "<script>alert(\"Missing Post ID\");</script>";
-        }
-    } else if ($_SERVER["REQUEST_METHOD"] == "POST"){
-        if( isset($_POST["postID"]) && isset($_POST["postID"])){
+    if ($_SERVER["REQUEST_METHOD"] == "POST"){
+        if(isset($_POST["postID"])){
             $postID = $_POST["postID"];
             $realRequest = true;
         } else {
-            echo "<script>alert(\"Missing Post ID\");</script>";
+            echo "Missing Post ID";
         }
     } else {
-        echo '<script>alert(\"Faulty request\");</script>';
+        echo 'Faulty request';
     }
     if($realRequest){
         try{
             include('credentials.php');
-            $conn = new mysqli($servername, $username, $password, $dbname);
-            if ($conn->connect_error) {
-                die("Connection failed: " . $conn->connect_error);
-            }
-            //title 0, images 1, votes 2, dateCreated 3, sliceName 4, sliceImage 5, displayName 6, commentCount 7
-            $sql = "DELETE FROM posts WHERE postID = ".$postID;
-            if($conn -> query($sql) === TRUE){
-                echo "Record deleted successfully";
-            } else {
-                echo "Failure to delete record";
-            }
+
+            $mysqli = new mysqli($servername, $username, $password, $dbname);
+
+            $conn = $mysqli->prepare("DELETE FROM posts WHERE postID = ?");
+			$conn->bind_param('i', $postID);
+			$conn->execute();
             $conn->close();
+
         }catch(mysqli_sql_exception $e){
             echo json_encode($e);
         }

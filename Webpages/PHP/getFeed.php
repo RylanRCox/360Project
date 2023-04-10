@@ -4,26 +4,32 @@
     $isUser = false;
 
 	if ($_SERVER["REQUEST_METHOD"] == "GET"){
-        if(isset($_GET["sliceID"])){
+        if(isset($_GET["sliceID"]) && isset($_GET['sortBy'])){
             $sliceID = $_GET["sliceID"];
+            $sortBy = $_GET['sortBy'];
             $isSlice = true;
-        } else if(isset($_GET["userID"])){
+        } else if(isset($_GET["userID"]) && isset($_GET['sortBy'])){
             $userID = $_GET["userID"];
+            $sortBy = $_GET['sortBy'];
             $isUser = true;
+        } else if (isset($_GET['sortBy'])){
+            $sortBy = $_GET['sortBy'];
         }
     } else if ($_SERVER["REQUEST_METHOD"] == "POST"){
-        if(isset($_POST["sliceID"])){
+        if(isset($_POST["sliceID"]) && isset($_POST['sortBy'])){
             $sliceID = $_POST["sliceID"];
+            $sortBy = $_POST['sortBy'];
             $isSlice = true;
-        } else if(isset($_POST["userID"])){
+        } else if(isset($_POST["userID"]) && isset($_POST['sortBy'])){
             $userID = $_POST["userID"];
+            $sortBy = $_POST['sortBy'];
             $isUser = true;
         }
     } else {
         echo '<script>alert(\"Faulty request\");</script>';
     }
     try{
-            
+        
         include("credentials.php");
         $conn = new mysqli($servername, $username, $password, $dbname);
         if ($conn->connect_error) {
@@ -46,7 +52,17 @@
             $sql .= " WHERE posts.userID = ".$userID;
         }
 
-        $sql .= " ORDER BY posts.dateCreated DESC";
+        if($sortBy == 0){
+            $sql .= " ORDER BY posts.dateCreated DESC";
+        } else if($sortBy == 1){
+            if($isSlice || $isUser){
+                $sql .= " AND";
+            } else {
+                $sql .= " WHERE";
+            }
+            $sql .= " posts.votes >= 20 ORDER BY posts.votes DESC";
+        }
+
         $results = $conn -> query($sql);
 
         

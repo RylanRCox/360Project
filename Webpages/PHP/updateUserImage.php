@@ -43,7 +43,7 @@
 			$stmt->execute();	
 			$data['success'] = TRUE;
 			$data['message'] = 'Image Updated!';
-		}catch(PDOException $e){
+		}catch(mysqli_sql_exception $e){
 				//return failure
 			$data['success'] = FALSE;
 			$data['message'] = 'Unable to Connect to server';

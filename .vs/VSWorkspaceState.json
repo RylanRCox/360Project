@@ -3,11 +3,10 @@
     "",
     "\\Database",
     "\\Webpages",
-    "\\Webpages\\JS",
     "\\Webpages\\PHP",
     "\\Webpages\\styles",
     "\\Webpages\\testFiles"
   ],
-  "SelectedNode": "\\Webpages\\postCreator.php",
+  "SelectedNode": "\\Webpages\\PHP\\setHidden.php",
   "PreviewInSolutionExplorer": false
 }

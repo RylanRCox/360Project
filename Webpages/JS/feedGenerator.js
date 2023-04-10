@@ -9,6 +9,8 @@ function pageIndexing(count, index, postCount, cap, getCall, isAdmin, activeUser
 
 		setTimeout(function () {
 			prevLink.addEventListener('click', function () {
+				//ARE THEY STORING VARIABLES IN THE HTML TO GET AROUND JS?
+				//You bet your goshdarn buttox we are.
 				count.innerHTML = (index - 10);
 				count.hidden = true;
 				printFeed(getCall, isAdmin, activeUser);
@@ -42,6 +44,7 @@ function pageIndexing(count, index, postCount, cap, getCall, isAdmin, activeUser
 function printFeed(getCall, isAdmin, activeUser) {
 	console.log('Active user: ' + activeUser);
 	//The first thing we do is we clear the feed, this avoids printing duplicates
+	getCall += "&activeUser=" + activeUser;
 	$('.feed').empty();
 	let results = $.get(getCall);
 	results.done(function (data) {
@@ -74,10 +77,11 @@ function printFeed(getCall, isAdmin, activeUser) {
 			let userID = postArray[i][7];
 			let displayName = postArray[i][8];
 			let commentCount = postArray[i][9];
-
+			let isHidden = postArray[i][10];
+			console.log(isHidden);
 
 			//Determine whether or not the post has an image attached.
-			console.log(postID);
+			
 
 			//Calculate the days since created
 			days = calculateDateDifference(dateCreated);
@@ -87,7 +91,9 @@ function printFeed(getCall, isAdmin, activeUser) {
 			if (commentCount !== null) {
 				count = commentCount;
 			}
-			buildPostDiv(votes, postID, title, sliceID, sliceName, userID, displayName, days, count, isAdmin, getCall, activeUser);
+			console.log('Outer Log: ' + postID);
+			buildPostDiv(votes, postID, title, sliceID, sliceName, userID, displayName, days, count, isAdmin, getCall, activeUser, isHidden);
+			
 		}
 
 		pageIndexing(count, index, postCount, cap, getCall, isAdmin, activeUser);
@@ -112,6 +118,35 @@ function printFeed(getCall, isAdmin, activeUser) {
 					
 				});
 			}
+			let hideButtons = document.getElementsByClassName('hideButton');
+			for (let i = 0; i < hideButtons.length; i++) {
+
+				hideButtons[i].addEventListener('click', function () {
+					results = $.post('./PHP/setHidden.php', { postID: hideButtons[i].getAttribute('value'), userID: activeUser });
+					results.done(function (data) {
+						console.log(data);
+						printFeed(getCall, isAdmin, activeUser);
+					});
+					results.fail(function (jqXHR) { console.log("Error: " + jqXHR.status); });
+					results.always(function () {
+					});
+				});
+			}
+			let revertHide = document.getElementsByClassName('unHide');
+			for (let i = 0; i < revertHide.length; i++) {
+
+				revertHide[i].addEventListener('click', function () {
+					results = $.post('./PHP/deleteHidden.php', { postID: revertHide[i].getAttribute('value'), userID: activeUser });
+					results.done(function (data) {
+						console.log(data);
+						printFeed(getCall, isAdmin, activeUser);
+					});
+					results.fail(function (jqXHR) { console.log("Error: " + jqXHR.status); });
+					results.always(function () {
+					});
+				});
+			}
+			//This mentally broke me. I think Im the lowest I've ever been. If you're reading, please... send help... and delete this repo.
 		}, 500);
 	});
 	results.fail(function (jqXHR) { console.log("Error: " + jqXHR.status); });
@@ -119,16 +154,28 @@ function printFeed(getCall, isAdmin, activeUser) {
 		console.log("Feed Update");
 	});
 }
-function buildPostDiv(votes, postID, title, sliceID, sliceName, userID, displayName, days, commentCount, isAdmin, getCall, activeUser) {
+function buildPostDiv(votes, postID, title, sliceID, sliceName, userID, displayName, days, commentCount, isAdmin, getCall, activeUser, isHidden) {
 
 	/*<div class = "post"></div> */
 	let postDiv = document.createElement("div");
 	postDiv.setAttribute('class', 'post');
+	postDiv.setAttribute('id', postID);
+
+	if (isHidden) {
+		let unHide = document.createElement("button");
+		unHide.setAttribute('class', 'unHide');
+		unHide.setAttribute('value', postID);
+		unHide.innerHTML = 'Un-hide Post';
+		postDiv.append(unHide);
+		console.log('Inner Log Lower: ' + postID);
+		$(".feed").append(postDiv);
+		return;
+	}
 
 	/*<div class = "votes"></div> */
 	let votesDiv = document.createElement("div");
 	votesDiv.setAttribute('class', 'votes');
-	
+
 	/*<div class = "post-content"></div>*/
 	let postContent = document.createElement("div");
 	postContent.setAttribute('class', 'post-content');
@@ -144,16 +191,16 @@ function buildPostDiv(votes, postID, title, sliceID, sliceName, userID, displayN
 	postDiv.append(votesDiv);
 	postDiv.append(postContent);
 
-	
+
 
 	/*<button type="submit" id="breadvote"></button> */
 	let breadButtonUp = document.createElement("button");
 	breadButtonUp.setAttribute('type', 'submit');
 	breadButtonUp.setAttribute('class', 'breadvote');
 	breadButtonUp.setAttribute('value', postID);
-	let results = $.post('./PHP/isLiked.php', { pID: postID, uID: activeUser });
+	results = $.post('./PHP/isLiked.php', { pID: postID, uID: activeUser });
 	results.done(function (data) {
-		console.log(data);
+		//console.log(data);
 		if (data == 'true') {
 			breadButtonUp.style.backgroundColor = 'deepskyblue';
 			breadButtonUp.style.borderRadius = '1em';
@@ -200,7 +247,7 @@ function buildPostDiv(votes, postID, title, sliceID, sliceName, userID, displayN
 
 	/*<img src = "~image~" class = "post-image" alt = "Post Content"/> */
 	let postImage = document.createElement("img");
-	postImage.setAttribute('src', 'PHP/image.php?table=posts&id='+postID);
+	postImage.setAttribute('src', 'PHP/image.php?table=posts&id=' + postID);
 	postImage.setAttribute('class', 'post-image');
 	postImage.setAttribute('alt', 'Post Content');
 
@@ -444,24 +491,17 @@ function buildPostDiv(votes, postID, title, sliceID, sliceName, userID, displayN
 	comments.setAttribute('id', 'comments');
 
 	/*<li> </li> */
-	let share = document.createElement("li");
-
-	/*<li> </li> */
 	let hide = document.createElement("li");
 
 	/*<a href="Comments.php">COMMENTCOUNT Comments</a> */
 	let commentsLink = document.createElement("a");
-	commentsLink.setAttribute('href', 'Comments.php');
+	commentsLink.setAttribute('href', 'post.php?postID=' + postID);
 	commentsLink.innerHTML = commentCount + ' Comments';
 
-	/*<a href="Share.php">Share</a> */
-	let shareLink = document.createElement("a");
-	shareLink.setAttribute('href', 'Share.php');
-	shareLink.innerHTML = 'Share';
-
-	/*<a href="Hide.php">Hide</a> */
-	let hideLink = document.createElement("a");
-	hideLink.setAttribute('href', 'Hide.php');
+	/*<button class = 'hideButton' value = POSTID >Hide</button> */
+	let hideLink = document.createElement("button");
+	hideLink.setAttribute('class', 'hideButton');
+	hideLink.setAttribute('value', postID);
 	hideLink.innerHTML = 'Hide';
 
 	/* INSERT BUTTONS INTO EACH FORM
@@ -502,21 +542,19 @@ function buildPostDiv(votes, postID, title, sliceID, sliceName, userID, displayN
 						<a href="Share.php">Share</a>
 					</li>
 					<li>
-						<a href="hide.js">Hide</a>
+						<button class = 'hideButton' value = POSTID >Hide</button>
 					</li>
 				</ul>
 			</div>
 		</div>
 	*/
 	lowerList.append(comments);
-	lowerList.append(share);
 	lowerList.append(hide);
 	comments.append(commentsLink);
-	share.append(shareLink);
 	hide.append(hideLink);
 
 	//Check if the current user is an admin, if they are, they are given access to delete posts.
-	
+
 	if (isAdmin) {
 
 		/*<li id = "admin"> </li> */
@@ -543,7 +581,8 @@ function buildPostDiv(votes, postID, title, sliceID, sliceName, userID, displayN
 			});
 		}, 100);
 	}
-	$(".feed").append(postDiv);
+		console.log('Inner Log Lower: ' + postID);
+		$(".feed").append(postDiv);
 }
 function calculateDateDifference(dateCreated) {
 	//We get the current date, and the date the post was created. Then we calculate the difference between and output it as days.

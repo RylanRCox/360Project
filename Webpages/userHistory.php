@@ -119,38 +119,45 @@
 					}
 					window.onload = (event) => {
 						let sortBy = 0;
-						let indexStart = 0;
 						let userID = JSON.parse('<?php echo json_encode($userID); ?>');
 						if(userID != -1){
 							deleteUserButton(userID);
 						}
 						displayUser(userID);
 						let isAdmin = JSON.parse("<?php echo json_encode($_SESSION['isAdmin']); ?>");
-						let getCall = './PHP/getFeed.php?userID=' + userID;
+						let getCall = './PHP/getFeed.php?userID=' + userID + '&sortBy=' + sortBy;
+						let countList = document.getElementById('countList');
+						let count = document.createElement('p');
+						count.setAttribute('id', 'postCount');
+						count.innerHTML = 0;
+						count.hidden = true;
+						countList.append(count);
 						printFeed(getCall, isAdmin);
-						/* To be added later
 						let newButton = document.getElementById('newButton');
 						let topButton = document.getElementById('topButton');
 						newButton.addEventListener('click', function(){
 							sortBy = 0;
+							getCall = './PHP/getFeed.php?userID=' + userID + '&sortBy=' + sortBy;
+							printFeed(getCall, isAdmin);
 						});
 						topButton.addEventListener('click', function(){
 							sortBy = 1;
+							getCall = './PHP/getFeed.php?userID=' + userID + '&sortBy=' + sortBy;
+							printFeed(getCall, isAdmin);
 						});
-						*/
-						window.setInterval(function(){printFeed(getCall, isAdmin);}, 30000);
+						window.setInterval(function(){
+							getCall = './PHP/getFeed.php?userID=' + userID + '&sortBy=' + sortBy;
+							printFeed(getCall, isAdmin);
+						}, 30000);
 					};
 				</script>
 			</div>
-			<!--
-			<div class="feednav">
-				<ul>
-					<li id="prev"><a href=prev.json>prev</a></li>
+			<div class = "feednav">
+				<ul id = 'prevNext'>
+					<li id = "prev" ></li>
+					<li id = "countList" ></li>
+					<li id = "next" ></li>
 				</ul>
-				<ul>
-					<li id="next"><a href=next.json>next</a></li>
-				</ul>
-				-->
 			</div>
 		</div>
 	</div>

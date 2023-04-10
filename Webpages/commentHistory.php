@@ -20,17 +20,9 @@
 	  <?php
 		$realRequest = false;
 		if ($_SERVER["REQUEST_METHOD"] == "GET"){
-			if( isset($_GET["postID"]) && isset($_GET["postID"])){
-				$postID = $_GET["postID"];
+			if( isset($_GET["userID"])){
 				$realRequest = true;
 				echo "<script>console.log(\"GET request Received\");</script>";
-			} else {
-				echo "<script>alert(\"Missing Post ID\");</script>";
-			}
-		} else if ($_SERVER["REQUEST_METHOD"] == "POST"){
-			if( isset($_POST["postID"]) && isset($_POST["postID"])){
-				$postID = $_POST["postID"];
-				$realRequest = true;
 			} else {
 				echo "<script>alert(\"Missing Post ID\");</script>";
 			}
@@ -81,114 +73,36 @@
 		<div class = "feedbox">
 			<div class = "feed">
 				<script>
-				function getPostData(postID){
-					let results = $.post("php/getPost.php", {postID:postID});
-					results.done(function(data){
-						data = JSON.parse(data);
-						//0 = title 1 = content 2 = votes 3 = dateCreated 4 = sliceName 5 = displayName 6 = count 7 = sliceID 8 = userID 9 = images
-						$(".title").empty();
-						$(".title").append("<h1>"+data[0]+"</h1>");
-						$(".post-body").empty();
-						$(".post-body").append("<p>"+data[1]+"</p>");
-						
-						if(data[9] != null){
-							let fig = document.createElement('figure');
-							let postImage = document.createElement('img');
-							postImage.setAttribute('id', 'postImage')
-							postImage.setAttribute('alt', 'postImage')
-							postImage.setAttribute('src', 'PHP/image.php?table=posts&id=' + postID);
-							fig.append(postImage);
-							$(".post-body").append(fig);
-						}
-						
 
-						$("#voteCount").empty();
-						$("#voteCount").append(data[2]);
-						const postDate = new Date(data[3]);
-						const currentDate = new Date();
-						let difference = currentDate.getTime() - postDate.getTime();
-						let days = Math.ceil(difference / (1000* 3600 * 24));
-						if(days == 1){
-							days = days + " day";
-						} else {
-							days = days + " days";
-						}
-						$("#slice").empty();
-						$("#slice").append('<form method = "GET" action = "slice.php"><button type = "submit" name = "sliceID" value = "' + data[7] + '">s/' + data[4] + '</button></form>');
-						$("#usertime").empty();
-
-						/*<form method="GET" action="userHistory.php"></form> */
-						let userForm = document.createElement("form");
-						userForm.setAttribute('method', 'GET');
-						userForm.setAttribute('action', 'userHistory.php');
-
-						/*<button type="submit" id="breadvote"></button> */
-						let userSubmitButton = document.createElement("button");
-						userSubmitButton.setAttribute('type', 'submit');
-						userSubmitButton.setAttribute('name', 'userID');
-						userSubmitButton.setAttribute('value', data[8]);
-						userSubmitButton.innerHTML = 'Post by ' + data[5] + ' ' + days + ' ago';
-
-						userForm.append(userSubmitButton);
-						$("#usertime").append(userForm);
-						
-						$("#comments").empty();
-						let comments = 0;
-						if(data[6] != null){
-							comments = data[6];
-						}
-						$("#comments").append("<a href = \"comments.php\">"+comments+" Comments</a>");
-						let isAdmin = JSON.parse('<?php echo json_encode($_SESSION['isAdmin']); ?>');
-						if(isAdmin){
-							$('#deleteHolder').empty();
-							$('#deleteHolder').append('<button type = "button" id = "postID' + postID + '">Delete Post</button>');
-							setTimeout(function(){
-								let deleteButton = document.getElementById('postID' + postID);
-								deleteButton.addEventListener('click', function(){
-									deletePost(postID);
-									setTimeout(function(){window.location.assign('./homepage.php');}, 500);
-									return;
-								});
-							},100);	
-						}
-					});
-					results.fail(function(jqXHR) { console.log("Error: "+jqXHR.status);});
-					results.always(function(){console.log("Done generating post");});
-				}
-
-				function writeComments(postID){
-					let results = $.post("php/getComments.php",{postID:postID});
+				function writeComments(){
+					let results = $.post("php/getComments.php",{ userID: <?php echo json_encode($_GET["userID"]); ?> });
 					results.done(function(data){
 						data = JSON.parse(data);
 						$('#commentHolder').empty();
 						let commentHolder = document.getElementById('commentHolder');
-						recurssiveGrab(data, null, 0, postID, commentHolder);
+						commentGrab(data, 0, commentHolder);
 					});
 
 					results.fail(function(jqXHR) { console.log("Error: "+jqXHR.status);});
 					results.always(function(){console.log("Done generating comments");});
 				}
 
-				function recurssiveGrab(commentArray, parentID, layer, postID, parentElement) {
+				function commentGrab(commentArray, layer,  parentElement) {
 					for (let i = 0; i < commentArray.length; i++) {
 						let commentID = commentArray[i][0];
 						let content = commentArray[i][1];
 						let votes = commentArray[i][2];
 						let dateCreated = commentArray[i][3];
-						let commentParentID = commentArray[i][4];
 						let displayName = commentArray[i][5];
 						let userID = commentArray[i][6];
 						
-						if (commentParentID == parentID) {
-							
-							let currComment = commentPrinter(content, votes, dateCreated, displayName, userID, commentID, postID);
-							recurssiveGrab(commentArray, commentID, layer + 1, postID, currComment);
-							parentElement.append(currComment);
-						}
+						let currComment = commentPrinter(content, votes, dateCreated, displayName, userID, commentID);
+						parentElement.append(currComment);
+						
 					}
 					
 				}
-				function commentPrinter(content, votes, dateCreated, displayName, userID, commentID, postID){
+				function commentPrinter(content, votes, dateCreated, displayName, userID, commentID){
 					console.log(commentID);
 
 					const postDate = new Date(dateCreated);
@@ -263,6 +177,7 @@
 					/*<p>~votes~</p> */
 					let voteCount = document.createElement("p")
 					voteCount.innerHTML = votes;
+					voteCount.style.fontSize = "13px";
 
 					/*<img src = "images/breadstick.png" class = "breadStickImage" alt = "breadStick"/> */
 					let breadStickImage = document.createElement("img");
@@ -350,24 +265,16 @@
 					commentContainer.setAttribute('class', 'commentContainer');
 
 					/*<textarea id="commentResponseText" name="content" rows="15" cols="102" placeholder="Enter your content here" required></textarea> */
-					let textArea = document.createElement('textarea');
-					textArea.setAttribute('class','commentResponseText');
-					textArea.setAttribute('name','content');
-					textArea.setAttribute('rows','15');
-					textArea.setAttribute('cols','102');
-					textArea.setAttribute('placeholder','Enter your content here');
-
+					
 					fieldSet.append(commentContainer);
-					commentContainer.append(textArea);
+				
 
 					/*<div class = 'commentSubmission></div>*/
 					let commentSubmission = document.createElement('div')
 					commentSubmission.setAttribute('class', 'commentSubmission');
 
 					/*<input type="submit" class="submitButton" /> */
-					let subSubmit = document.createElement('input');
-					subSubmit.setAttribute('type', 'submit');
-					subSubmit.setAttribute('class', 'submitButton');
+					
 
 					/*<input type='hidden' class='commentParent' name='commentParent' value='COMMENTID' /> */
 					let parentHidden = document.createElement('input');
@@ -379,12 +286,9 @@
 					/*<input type='hidden' class='postID' name='postID' value='POSTID' /> */
 					let postHidden = document.createElement('input');
 					postHidden.setAttribute('type', 'hidden');
-					postHidden.setAttribute('class', 'postID');
-					postHidden.setAttribute('name', 'postID');
-					postHidden.setAttribute('value', postID);
 
-					fieldSet.append(commentSubmission);
-					commentSubmission.append(subSubmit);
+					
+					
 					commentSubmission.append(parentHidden);
 					commentSubmission.append(postHidden);
 
@@ -393,73 +297,24 @@
 					return classDiv;
 				}
 				window.onload = (event) => {
-					let postID = JSON.parse('<?php echo json_encode($postID); ?>');
-					let postSender = document.getElementById('postID');
-					postSender.setAttribute('value', postID);
-					let parentSender = document.getElementById('commentParent');
-					parentSender.setAttribute('value', null);
 					console.log("Is the request real: " + JSON.parse('<?php echo json_encode($realRequest); ?>'));
 					if(JSON.parse('<?php echo json_encode($realRequest); ?>')){
-						getPostData(postID);
-						writeComments(postID);
+						
+						writeComments();
 						window.setInterval(function(){
-							getPostData(postID);
-							writeComments(postID);
+							
+							writeComments();
 						}, 30000);
 					}
 				}
 				
 				</script>
-				<div class = "post">
-					<div class = "post-head"> 
-						<div class = "votes">
-							<button type="submit" class = "breadvote"><img src ="images/breadstick.png" class = "breadStickImage" alt = "UpBread"></button>
-							<p id = "voteCount"></p>
-							<button type="submit" class = "breadvote"><img src ="images/breadstick.png" class = "breadStickImage" alt = "UpBread"></button>
-						</div> <!--Close Votes-->
-						<div class = "post-content">
-							<ul>
-								<li id = "slice">
-								</li>
-								<li id = "usertime">
-								</li>
-							</ul>
-
-							<div class = "title">
-							</div> <!--Close title-->
-						</div><!--Close post content-->
-					</div> <!--Close Post Head-->
-					<div class = "post-body">
-					</div><!--Close post body-->
-					<ul>
-						<li id = "comments">
-						</li>
-						<li>
-							<a href = "Share.php">Share</a>
-						</li>
-						<li>
-							<label for="order">Order by: </label>
-							<select name="slice" id="order">
-								<option>Top</option>
-								<option>New</option>
-							</select>
-						</li>
-						<li id = "deleteHolder">
-						</li>
-					</ul>
-					<div id="postBox">
-						<form method="post" name="newPost" enctype="multipart/form-data" onsubmit="return validate()" action="./PHP/addComment.php">
-							<fieldset>
-								<div id="contentContainer">
-									<textarea id="contentText" name="content" rows="15" cols="102" placeholder="Enter your content here" required></textarea>
-								</div> <!--Close content container-->
-								<div id="submitContainer">
-									<input type="submit" value="Comment" class="submitButton" />
-								</div><!-- Closer submit container-->
+				
+					
+					
+				
 								<input type='hidden' id='commentParent' name='commentParent' />
-								<input type='hidden' id='postID' name='postID' />
-							</fieldset>
-						</form>
+						
 						<div id="commentHolder">
 						<!--Comments go here -->
 						</div> <!--Close comment holder-->

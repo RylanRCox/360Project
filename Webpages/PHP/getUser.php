@@ -24,7 +24,7 @@
             if ($conn->connect_error) {
                 die("Connection failed: " . $conn->connect_error);
             }
-            $sql = "SELECT displayName,  userBio FROM users WHERE userID = ".$userID;
+            $sql = "SELECT displayName, userBio FROM users WHERE userID = ".$userID;
             $results = $conn -> query($sql);
             while($row = $results->fetch_assoc()){
                 $returnArray = array($row["displayName"],$row["userBio"]);

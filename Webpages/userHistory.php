@@ -167,13 +167,11 @@
 		</div>
 	</div>
 	<div class="user-container">
-		<div id="submission">
-			<p id = "displayerName">Display Name</p>
-			<p><a id = "commentHistory">View History</a></p>
-			<img id="profilePicture" alt="Profile Picture">
-			<p id = "userBio"> userBio</p>
-			<div id ="deleteHolder">
-			</div>
+		<p id = "displayerName">Display Name</p>
+		<p><a id = "commentHistory">View History</a></p>
+		<img id="profilePicture" alt="Profile Picture">
+		<p id = "userBio"> userBio</p>
+		<div id ="deleteHolder">
 		</div>
 	</div>
 </body>

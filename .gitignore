@@ -1,8 +1,7 @@
 #ignore node modules
 /node_modules
-/tests/node_modules'
+/tests/node_modules
 /vendor
-*.composer.json
-*.composer.lock
+/tests/vendor
 /composer.json
 /composer.lock

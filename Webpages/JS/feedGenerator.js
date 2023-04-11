@@ -563,7 +563,6 @@ function buildPostDiv(votes, postID, title, sliceID, sliceName, userID, displayN
 	})
 	hide.style.cursor = "pointer";
 	hide.addEventListener("click",function(){
-		alert('test');
 		postDiv.style.display = 'none';
 	})
 	lowerList.append(hide);

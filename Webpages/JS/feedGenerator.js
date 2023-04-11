@@ -571,8 +571,7 @@ function buildPostDiv(votes, postID, title, sliceID, sliceName, userID, displayN
 	hide.append(hideLink);
 
 	//Check if the current user is an admin, if they are, they are given access to delete posts.
-
-	if (isAdmin) {
+	if (isAdmin || activeUser == userID && userID != -1) {
 
 		/*<li id = "admin"> </li> */
 		let admin = document.createElement("li");

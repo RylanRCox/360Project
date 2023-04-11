@@ -155,7 +155,8 @@
 						}
 						$("#comments").append("<a href = \"comments.php\">"+comments+" Comments</a>");
 						let isAdmin = JSON.parse('<?php echo json_encode($_SESSION['isAdmin']); ?>');
-						if(isAdmin){
+
+						if(isAdmin || activeUser == data[8] && activeUser != -1){
 							$('#deleteHolder').empty();
 							$('#deleteHolder').append('<button type = "button" id = "postID' + postID + '">Delete Post</button>');
 							setTimeout(function(){
@@ -446,6 +447,7 @@
 					return classDiv;
 				}
 				window.onload = (event) => {
+
 					let postID = JSON.parse('<?php echo json_encode($postID); ?>');
 
 					let postSender = document.getElementById('postID');
@@ -514,14 +516,7 @@
 						<li id = "comments">
 						</li>
 						<li>
-							<a href = "Share.php">Share</a>
-						</li>
-						<li>
-							<label for="order">Order by: </label>
-							<select name="slice" id="order">
-								<option>Top</option>
-								<option>New</option>
-							</select>
+							<a id = 'shareLink' href = "Share.php">Share</a>
 						</li>
 						<li id = "deleteHolder">
 						</li>

@@ -104,12 +104,13 @@
 						newButton.addEventListener('click', function(){
 							sortBy = 0;
 							getCall = './PHP/getFeed.php?sortBy=' + sortBy;
-							
+							count.innerHTML = 0;
 							printFeed(getCall, isAdmin, activeUser);
 						});
 						topButton.addEventListener('click', function(){
 							sortBy = 1;
 							getCall = './PHP/getFeed.php?sortBy=' + sortBy;
+							count.innerHTML = 0;
 							printFeed(getCall, isAdmin, activeUser);
 						});
 						

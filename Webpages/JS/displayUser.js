@@ -23,7 +23,7 @@ function displayUser(userID, displayName) {
 	let figCap = document.createElement('figcaption');
 	figCap.setAttribute('id', 'displayName');
 	figCap.innerHTML = displayName;
-	setNotifications(userImage);
+	setNotifications();
 	
 	/* 
 	<div id = "userDiv" >
@@ -40,14 +40,12 @@ function displayUser(userID, displayName) {
 	userLink2.append(figCap);
 	return userDiv;
 }
-function setNotifications(userImage) {
+function setNotifications() {
 	let results = $.post('./PHP/getNotifications.php');
 	results.done(function (data) {
 		console.log(data);
-		let resultsArray = JSON.parse(data);
-		userImage.style.border = '0.1em solid red';
 
-		
+		let resultsArray = JSON.parse(data);
 
 		let dropLi = document.createElement('li');
 		dropLi.setAttribute('class', 'dropdown');

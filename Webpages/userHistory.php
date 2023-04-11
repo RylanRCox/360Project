@@ -116,7 +116,7 @@
 							$('#profilePicture').attr('src', 'PHP/image.php?table=users&id=' + userID);
 							$('#userBio').html(postArray[1]);
 							let histLink = $('#commentHistory');
-							histLink.attr("href","commentHistory.php?userID=" + userID)
+							histLink.attr("href","commentHistory.php?userID=" + userID + "&displayName=" + postArray[0]);
 						});
 						results.fail(function(jqXHR) { console.log("Error: "+jqXHR.status);});
 						results.always(function(){console.log("Feed Update");});
@@ -185,7 +185,7 @@
 	</div>
 	<div class="user-container">
 		<p id = "displayerName">Display Name</p>
-		<p><a id = "commentHistory">View History</a></p>
+		<p><a id = "commentHistory">View Comment History</a></p>
 		<img id="profilePicture" alt="Profile Picture">
 		<p id = "userBio"> userBio</p>
 		<div id ="deleteHolder">

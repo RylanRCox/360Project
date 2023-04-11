@@ -61,9 +61,9 @@
 			?>
 		</ul>
 		<script>
-			let userID = JSON.parse('<?php echo json_encode($_SESSION['userID']); ?>');
+			let userID = JSON.parse('<?php echo json_encode($_GET['userID']); ?>');
 			if( userID != -1){
-				let displayName = JSON.parse('<?php echo json_encode($_SESSION['displayName']); ?>');
+				let displayName = JSON.parse('<?php echo json_encode($_GET['displayName']); ?>');
 				let headerList = document.getElementById('headerList');
 				headerList.append(displayUser(userID, displayName));
 			}

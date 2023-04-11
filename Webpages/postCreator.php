@@ -81,7 +81,7 @@ if($_SESSION['userID'] == -1){
 		</script>
 	</nav>
     <div id="newPostCreator">
-        <form method="post" enctype='multipart/form-data' id="newPost" onsubmit="return false;" action="PHP/savePost.php">
+        <form method="post" enctype='multipart/form-data' id="newPost" action="PHP/savePost.php">
             <input type="hidden" name = "MAX_FILE_SIZE" value = "1000000"/>
             <fieldset>
                 <div id="titleContainer">
@@ -110,7 +110,6 @@ if($_SESSION['userID'] == -1){
     <script>
   $(document).ready(function (e) {
  $("#newPost").on('submit',(function(e) {
-
   e.preventDefault();
   /*
   var formData = {

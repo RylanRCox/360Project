@@ -19,7 +19,7 @@
 		<?php
 			$realRequest = false;
 			if ($_SERVER["REQUEST_METHOD"] == "GET"){
-				if( isset($_GET["keyWord"])){
+				if(isset($_GET["keyWord"])){
 					$keyWord = $_GET["keyWord"];
 					$realRequest = true;
 					echo "<script>console.log(\"GET request Received\");</script>";

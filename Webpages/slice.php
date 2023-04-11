@@ -20,17 +20,10 @@
 	<?php
 		$realRequest = false;
 		if ($_SERVER["REQUEST_METHOD"] == "GET"){
-			if( isset($_GET["sliceID"]) && isset($_GET["sliceID"])){
+			if(isset($_GET["sliceID"])){
 				$sliceID = $_GET["sliceID"];
 				$realRequest = true;
 				echo "<script>console.log(\"GET request Received\");</script>";
-			} else {
-				echo "<script>alert(\"Missing Slice ID\");</script>";
-			}
-		} else if ($_SERVER["REQUEST_METHOD"] == "POST"){
-			if( isset($_POST["sliceID"]) && isset($_POST["sliceID"])){
-				$sliceID = $_POST["sliceID"];
-				$realRequest = true;
 			} else {
 				echo "<script>alert(\"Missing Slice ID\");</script>";
 			}

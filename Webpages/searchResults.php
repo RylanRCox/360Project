@@ -2,7 +2,6 @@
 	session_start();
 	include './PHP/isAdmin.php';
 	checkAdmin();
-	$_SESSION['isAdmin'] = false;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -23,13 +22,6 @@
 					$keyWord = $_GET["keyWord"];
 					$realRequest = true;
 					echo "<script>console.log(\"GET request Received\");</script>";
-				} else {
-					echo "<script>alert(\"Missing Keyword\");</script>";
-				}
-			} else if ($_SERVER["REQUEST_METHOD"] == "POST"){
-				if( isset($_POST["keyWord"])){
-					$keyWord = $_POST["keyWord"];
-					$realRequest = true;
 				} else {
 					echo "<script>alert(\"Missing Keyword\");</script>";
 				}

@@ -56,6 +56,7 @@ function setNotifications() {
 		dropLink.setAttribute('href', 'javascript:void(0)');
 		dropLink.setAttribute('class', 'dropbtn');
 		dropLink.innerHTML = 'Notes ' + resultsArray[0][0];
+		dropLink.style.width = '5em';
 
 		dropLi.append(dropLink);
 

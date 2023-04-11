@@ -5,17 +5,17 @@
             $userID = $_GET["userID"];
             $realRequest = true;
         } else {
-            echo "<script>alert(\"Missing Post ID\");</script>";
+            echo "Missing Post ID";
         }
     } else if ($_SERVER["REQUEST_METHOD"] == "POST"){
         if( isset($_POST["userID"])){
             $userID = $_POST["userID"];
             $realRequest = true;
         } else {
-            echo "<script>alert(\"Missing Post ID\");</script>";
+            echo "Missing Post ID";
         }
     } else {
-        echo '<script>alert(\"Faulty request\");</script>';
+        echo "Faulty request";
     }
     if($realRequest){
         try{
@@ -24,8 +24,11 @@
             if ($conn->connect_error) {
                 die("Connection failed: " . $conn->connect_error);
             }
-            $sql = "SELECT displayName, userBio FROM users WHERE userID = ".$userID;
-            $results = $conn -> query($sql);
+            $sql = "SELECT displayName, userBio FROM users WHERE userID = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('i', $userID);
+            $stmt->execute();
+            $results = $stmt ->get_result();
             while($row = $results->fetch_assoc()){
                 $returnArray = array($row["displayName"],$row["userBio"]);
             }

@@ -13,14 +13,14 @@
 			$title=$_POST['title'];
 			$content=$_POST['content'];
 			$sliceID=$_POST['sliceID'];
-			if (strlen($title) > 350) {
+			if (strlen($title) > 25) {
 				$errors['title'] = "Title is too long!";
 				$data['message'] = $errors['title'];
 			} else if ($title == "") {
 				$errors['title'] = "Title is empty!";
 				$data['message'] = $errors['title'];
 			}
-			if (strlen($content) > 100) {
+			if (strlen($content) > 8000) {
 				$errors['content'] = "Content is too long!";
 				$data['message'] = $errors['content'];
 			} else if ($content == "") {
@@ -28,7 +28,7 @@
 				$data['message'] = $errors['content'];
 			}
 			if ($sliceID > 3 || $sliceID < 1) {
-				$errors['sliceID'] = "Slice does not exist!";
+				$errors['sliceID'] = "Please choose a real slice!";
 				$data['message'] = $errors['sliceID'];
 			}
 		} else if (!isset($_POST['title'])) {
@@ -72,6 +72,9 @@
 	} else {
 		try {
 			$mysqli = new mysqli($servername, $username, $password, $dbname);
+			if ($mysqli->connect_error) {
+                die("Connection failed: " . $conn->connect_error);
+            }
 			$stmt = $mysqli->prepare("INSERT INTO posts VALUES (DEFAULT,?, ?, ?, ?, DEFAULT, DEFAULT, ?, ? )");
 			$stmt->bind_param('ssssii',$_POST['title'],$_POST['content'], $images, $fileType, $_POST['sliceID'],$_SESSION['userID']);
 			$stmt->execute();	

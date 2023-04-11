@@ -28,6 +28,9 @@
 	} else {
 		try {
 			$mysqli = new mysqli($servername, $username, $password, $dbname);
+			if ($mysqli->connect_error) {
+                die("Connection failed: " . $conn->connect_error);
+            }
 			$stmt = $mysqli->prepare("update users set pass = ? where userID = ?;");
 			$pass = md5($pass);
 			$stmt->bind_param('si', $pass,$_SESSION['userID']);

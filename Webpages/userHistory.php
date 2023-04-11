@@ -109,10 +109,11 @@
 					function displayUser(userID){
 						let results = $.get("PHP/getUser.php?userID=" + userID);
 						results.done(function(data){
+							console.log(data);
 							let postArray = JSON.parse(data);
-							console.log(postArray);
-							$('#displayerName').empty();
-							$('#displayerName').append('<p>' + postArray[0] + '</p>');
+							
+							$('#profileName').empty();
+							$('#profileName').append('<p>' + postArray[0] + '</p>');
 							$('#profilePicture').attr('src', 'PHP/image.php?table=users&id=' + userID);
 							$('#userBio').html(postArray[1]);
 							let histLink = $('#commentHistory');
@@ -184,7 +185,7 @@
 		</div>
 	</div>
 	<div class="user-container">
-		<p id = "displayerName">Display Name</p>
+		<p id = "profileName">Display Name</p>
 		<p><a id = "commentHistory">View Comment History</a></p>
 		<img id="profilePicture" alt="Profile Picture">
 		<p id = "userBio"> userBio</p>

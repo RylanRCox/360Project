@@ -27,6 +27,9 @@
 	} else {
 		try {
 			$mysqli = new mysqli($servername, $username, $password, $dbname);
+			if ($mysqli->connect_error) {
+                die("Connection failed: " . $conn->connect_error);
+            }
 			$stmt = $mysqli->prepare("update users set userBio = ? where userID = ?;");
 			$stmt->bind_param('si', $userBio,$_SESSION['userID']);
 			$stmt->execute();	

@@ -29,6 +29,9 @@ if (!empty($errors)) {
 	try {
 
 		$mysqli = new mysqli($servername, $username, $password, $dbname);
+		if ($mysqli->connect_error) {
+			die("Connection failed: " . $conn->connect_error);
+		}
 
 		$stmt = $mysqli->prepare("SELECT * FROM users WHERE email = ?;");
 		$stmt->bind_param('s', $email);

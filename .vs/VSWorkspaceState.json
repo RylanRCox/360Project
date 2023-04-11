@@ -3,10 +3,10 @@
     "",
     "\\Database",
     "\\Webpages",
+    "\\Webpages\\JS",
     "\\Webpages\\PHP",
-    "\\Webpages\\styles",
-    "\\Webpages\\testFiles"
+    "\\Webpages\\styles"
   ],
-  "SelectedNode": "\\Webpages\\PHP\\setHidden.php",
+  "SelectedNode": "\\Webpages\\userSettings.php",
   "PreviewInSolutionExplorer": false
 }

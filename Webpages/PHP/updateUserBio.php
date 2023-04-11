@@ -3,16 +3,23 @@
     include('credentials.php');
     $data = [];
     $errors = [];
-    if (!empty($_POST)){
-		$userBio=$_POST['userBio'];
-	}
-	if(empty($userBio)){
-		$errors['userBio'] = "Add a valid bio";
-        $data['message'] = $errors['userBio'];
-        if(strlen($userBio) > 200){
-            $errors['userBio'] = "User Bio is too long!";
-            $data['message'] = $errors['userBio'];
-        }
+    if ($_SERVER["REQUEST_METHOD"] == "POST"){
+		if(isset($_POST['userBio'])){
+			$userBio=$_POST['userBio'];
+			if(strlen($userBio) > 200){
+				$errors['userBio'] = "User Bio is too long!";
+				$data['message'] = $errors['userBio'];
+			} else if ($userBio == ""){
+				$errors['userBio'] = "User Bio is empty!";
+				$data['message'] = $errors['userBio'];
+			}
+		} else{
+			$errors['userBio'] = "Add a valid bio";
+			$data['message'] = $errors['userBio'];
+		}
+	} else {
+		$errors['userBio'] = "Faulty Request";
+		$data['message'] = $errors['userBio'];
 	}
     if (!empty($errors)) {
     	$data['success'] = false;

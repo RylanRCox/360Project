@@ -3,12 +3,24 @@
     include('credentials.php');
     $data = [];
     $errors = [];
-    if (!empty($_POST)){
-		$pass=$_POST['pass'];
-	}
-	if(empty($pass)){
-		$errors['pass'] = "Add pass";
-        $data['message'] = $errors['pass'];
+
+	if ($_SERVER["REQUEST_METHOD"] == "POST"){
+		if(isset($_POST['pass'])){
+			$pass=$_POST['pass'];
+			if(strlen($pass) > 100){
+				$errors['pass'] = "Password is too long!";
+				$data['message'] = $errors['pass'];
+			} else if ($pass == ""){
+				$errors['pass'] = "Password is empty!";
+				$data['message'] = $errors['pass'];
+			}
+		} else{
+			$errors['pass'] = "Add pass";
+			$data['message'] = $errors['pass'];
+		}
+	} else {
+		$errors['pass'] = "Faulty Request";
+		$data['message'] = $errors['pass'];
 	}
     if (!empty($errors)) {
     	$data['success'] = false;

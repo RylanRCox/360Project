@@ -40,7 +40,6 @@
     <script>
         $(document).ready(function() {
             $('#logInButton').on('click',function(){
-                console.log("sanity");
                 
                 
             var formData = {

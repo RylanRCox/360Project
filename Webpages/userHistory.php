@@ -21,7 +21,7 @@
 	<?php
 		$realRequest = false;
 		if ($_SERVER["REQUEST_METHOD"] == "GET"){
-			if( isset($_GET["userID"]) && isset($_GET["userID"])){
+			if( isset($_GET["userID"])){
 				$userID = $_GET["userID"];
 				$realRequest = true;
 				echo "<script>console.log(\"GET request Received\");</script>";
@@ -116,7 +116,7 @@
 							$('#profilePicture').attr('src', 'PHP/image.php?table=users&id=' + userID);
 							$('#userBio').html(postArray[1]);
 							let histLink = $('#commentHistory');
-							histLink.attr("href","commentHistory.php?userID=" + userID + "&displayName=" + postArray[0]);
+							histLink.attr("href","commentHistory.php?userID=" + userID);
 						});
 						results.fail(function(jqXHR) { console.log("Error: "+jqXHR.status);});
 						results.always(function(){console.log("Feed Update");});

@@ -21,6 +21,7 @@
 		$realRequest = false;
 		if ($_SERVER["REQUEST_METHOD"] == "GET"){
 			if( isset($_GET["userID"])){
+				$userID = $_GET["userID"];
 				$realRequest = true;
 				echo "<script>console.log(\"GET request Received\");</script>";
 			} else {
@@ -61,9 +62,9 @@
 			?>
 		</ul>
 		<script>
-			let userID = JSON.parse('<?php echo json_encode($_GET['userID']); ?>');
+			let userID = JSON.parse('<?php echo json_encode($_SESSION['userID']); ?>');
 			if( userID != -1){
-				let displayName = JSON.parse('<?php echo json_encode($_GET['displayName']); ?>');
+				let displayName = JSON.parse('<?php echo json_encode($_SESSION['displayName']); ?>');
 				let headerList = document.getElementById('headerList');
 				headerList.append(displayUser(userID, displayName));
 			}
@@ -332,7 +333,7 @@
 								}
 							})
 						}
-
+					userID = JSON.parse('<?php echo json_encode($userID); ?>');
 					displayUser(userID);
 					console.log("Is the request real: " + JSON.parse('<?php echo json_encode($realRequest); ?>'));
 					if(JSON.parse('<?php echo json_encode($realRequest); ?>')){

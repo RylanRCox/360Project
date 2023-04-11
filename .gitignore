@@ -3,5 +3,6 @@
 /tests/node_modules
 /vendor
 /tests/vendor
+/Webpages/vendor
 /composer.json
 /composer.lock

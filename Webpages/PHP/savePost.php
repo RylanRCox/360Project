@@ -8,21 +8,42 @@
 	$errors = [];
 	$images = NULL;
 	
-	
-	if (!empty($_POST)){
-		$title=$_POST['title'];
-		$content=$_POST['content'];
-		$sliceID=$_POST['sliceID'];
-	}
-	if(empty($title)){
-		$errors['title'] = "Title is required.";
-	}
-	if(empty($content)){
-		$errors['content'] = "Content is required.";
-	}
-	if(empty($sliceID) ){
-		$errors['sliceID'] = array_keys($_POST);
-		$data['message'] = $errors['sliceID'];
+	if ($_SERVER["REQUEST_METHOD"] == "POST") {
+		if (isset($_POST['title']) && isset($_POST['sliceID'])) {
+			$title=$_POST['title'];
+			$content=$_POST['content'];
+			$sliceID=$_POST['sliceID'];
+			if (strlen($title) > 350) {
+				$errors['title'] = "Title is too long!";
+				$data['message'] = $errors['title'];
+			} else if ($title == "") {
+				$errors['title'] = "Title is empty!";
+				$data['message'] = $errors['title'];
+			}
+			if (strlen($content) > 100) {
+				$errors['content'] = "Content is too long!";
+				$data['message'] = $errors['content'];
+			} else if ($content == "") {
+				$errors['content'] = "Content is empty!";
+				$data['message'] = $errors['content'];
+			}
+			if ($sliceID > 3 || $sliceID < 1) {
+				$errors['sliceID'] = "Slice does not exist!";
+				$data['message'] = $errors['sliceID'];
+			}
+		} else if (!isset($_POST['title'])) {
+			$errors['title'] = "Missing Email";
+			$data['message'] = $errors['title'];
+		} else if (!isset($_POST['content'])) {
+			$errors['content'] = "Missing Content";
+			$data['message'] = $errors['content'];
+		} else if (!isset($_POST['sliceID'])) {
+			$errors['sliceID'] = "Missing sliceID";
+			$data['message'] = $errors['sliceID'];
+		}
+	} else {
+		$errors['email'] = "Faulty Request";
+		$data['message'] = $errors['email'];
 	}
 	//change file to base64 encoded item, check if large enough 
 	if(!empty($_FILES["images"]["name"]) && !empty($_FILES["images"]["tmp_name"])) { 

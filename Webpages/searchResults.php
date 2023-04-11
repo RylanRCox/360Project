@@ -1,108 +1,138 @@
 <?php
-	session_start();
-	include './PHP/isAdmin.php';
-	checkAdmin();
+session_start();
+include './PHP/isAdmin.php';
+checkAdmin();
 ?>
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta http-equiv="X-UA-Compatible" content="ie=edge">
-		<title>Breadit - The front page of the the internet</title>
-		<link rel="stylesheet" href="styles/masterStyle.css">
-		<script type="text/javascript" src="./JS/displayUser.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-	</head>
-	<body>
-		<?php
-			$realRequest = false;
-			if ($_SERVER["REQUEST_METHOD"] == "GET"){
-				if(isset($_GET["keyWord"])){
-					$keyWord = $_GET["keyWord"];
-					$realRequest = true;
-					echo "<script>console.log(\"GET request Received\");</script>";
-				} else {
-					echo "<script>alert(\"Missing Keyword\");</script>";
-				}
-			} else {
-				echo '<script>alert(\"Faulty request\");</script>';
-			}
-		?>
-	  <nav>
-			<ul id = 'headerList'>
-				<li><a href="homepage.php"><img id = "breadly" src = "images/Breadly.png" ><div id = "logo">Breadit</div></a></li>
-				<li class="dropdown">
-					<a href="javascript:void(0)" class="dropbtn">Slices</a>
-					<div class="dropdown-content">
-						<form method = "GET" action = "slice.php">
-							<button type = "submit" name = sliceID value = 1>Sourdough</button>
-							<button type = "submit" name = sliceID value = 2>Flatbread</button>
-							<button type = "submit" name = sliceID value = 3>Croissant</button>
-						</form>
-					</div>
-				</li>
-				<li id = "searchbox">
-					<form method = "GET" action = "searchResults.php">
-						<input type="text" name="keyWord" placeHolder = "Search" id = "search" required>
-						<button type="submit" id = "searchButton">Search</button>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Breadit - The front page of the the internet</title>
+	<link rel="stylesheet" href="styles/masterStyle.css">
+	<script type="text/javascript" src="./JS/displayUser.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+</head>
+
+<body>
+	<?php
+	$realRequest = false;
+	if ($_SERVER["REQUEST_METHOD"] == "GET") {
+		if (isset($_GET["keyWord"])) {
+			$keyWord = $_GET["keyWord"];
+			$realRequest = true;
+			echo "<script>console.log(\"GET request Received\");</script>";
+		} else {
+			echo "<script>alert(\"Missing Keyword\");</script>";
+		}
+	} else {
+		echo '<script>alert(\"Faulty request\");</script>';
+	}
+	?>
+	<nav>
+		<ul id='headerList'>
+			<li><a href="homepage.php"><img id="breadly" src="images/Breadly.png">
+					<div id="logo">Breadit</div>
+				</a></li>
+			<li class="dropdown">
+				<a href="javascript:void(0)" class="dropbtn">Slices</a>
+				<div class="dropdown-content">
+					<form method="GET" action="slice.php">
+						<button type="submit" name=sliceID value=1>Sourdough</button>
+						<button type="submit" name=sliceID value=2>Flatbread</button>
+						<button type="submit" name=sliceID value=3>Croissant</button>
 					</form>
-				</li>
-				<?php
-					if($_SESSION['userID'] != -1){
-						echo '<li id = prefs><a href ="userSettings.php">Settings</a></li>';
-						echo '<li id = logout><a>Logout</a></li>';
-					} else {
-						echo '<li id = logout><a href ="signIn.php">Login</a></li>';
-					}
-				?>
-			</ul>
-			<script>
-				let userID = JSON.parse('<?php echo json_encode($_SESSION['userID']); ?>');
-				if( userID != -1){
-					let displayName = JSON.parse('<?php echo json_encode($_SESSION['displayName']); ?>');
-					let headerList = document.getElementById('headerList');
-					headerList.append(displayUser(userID, displayName));
-				}
-			</script>
-		</nav>
-		<div class = "feedbox">
-			<div class = "feed">
+				</div>
+			</li>
+			<li id="searchbox">
+				<form method="GET" action="searchResults.php">
+					<input type="text" name="keyWord" placeHolder="Search" id="search" required>
+					<button type="submit" id="searchButton">Search</button>
+				</form>
+			</li>
+			<?php
+			if ($_SESSION['userID'] != -1) {
+				echo '<li id = prefs><a href ="userSettings.php">Settings</a></li>';
+				echo '<li id = logout><a>Logout</a></li>';
+			} else {
+				echo '<li id = logout><a href ="signIn.php">Login</a></li>';
+			}
+			?>
+		</ul>
+		<script>
+			let userID = JSON.parse('<?php echo json_encode($_SESSION['userID']); ?>');
+			if (userID != -1) {
+				let displayName = JSON.parse('<?php echo json_encode($_SESSION['displayName']); ?>');
+				let headerList = document.getElementById('headerList');
+				headerList.append(displayUser(userID, displayName));
+			}
+		</script>
+	</nav>
+	<div class="feedbox">
+		<div class="feed">
 			<script>
 				window.onload = (event) => {
-					if($('#logout')){
-							$('#logout').children().first().css({'cursor': 'pointer'});;
-							$('#logout').on("click",function(){
-								$.get("PHP/logOut.php");
-								
-								const myTimeout = setTimeout(logout, 500);
-								function logout(){
-									$('#prefs').remove();
-									$('#userDiv').empty();
-									$('#userDiv').remove();
-									$('#notesLi').empty();
-									$('#notesLi').remove();
-									$('#logout').html('<a href="signIn.php">Login</a>');
-									$('#logout').attr("id","signUp");
-								}
-							})
-						}
-					if(JSON.parse('<?php echo json_encode($realRequest); ?>')){
+					if ($('#logout')) {
+						$('#logout').children().first().css({ 'cursor': 'pointer' });;
+						$('#logout').on("click", function () {
+							$.get("PHP/logOut.php");
+
+							const myTimeout = setTimeout(logout, 500);
+							function logout() {
+								$('#prefs').remove();
+								$('#userDiv').empty();
+								$('#userDiv').remove();
+								$('#notesLi').empty();
+								$('#notesLi').remove();
+								$('#logout').html('<a href="signIn.php">Login</a>');
+								$('#logout').attr("id", "signUp");
+							}
+						})
+					}
+					if (JSON.parse('<?php echo json_encode($realRequest); ?>')) {
 						let keyWord = JSON.parse('<?php echo json_encode($keyWord); ?>');
 						queryDatabase(keyWord);
 					}
 				}
-				function queryDatabase(keyWord){
+				function queryDatabase(keyWord) {
 					let results = $.get("php/searchDB.php?keyWord=" + keyWord);
-					results.done(function(data){
+					results.done(function (data) {
 						console.log(data);
 						let resultsArray = JSON.parse(data);
-						for(let i = 0; i < resultsArray.length; i++){
+						/*<div class = "searchResult"></div> */
+						let resultDiv = document.createElement("div");
+						resultDiv.setAttribute('class', 'searchResult');
+						if(resultsArray.length == 0){
+
+							let results = document.createElement("p");
+							results.setAttribute('id', 'resultsP');
+							results.innerHTML = "No Results Found D:";
+
+							resultDiv.append(results);
+
+							$('.feed').append(resultDiv);
+
+						} else { 
+
+							let results = document.createElement("p");
+							results.setAttribute('id', 'resultsP');
+							results.innerHTML = "Showing Results For '" + keyWord +  "':";
+
+							resultDiv.append(results);
+
+							$('.feed').append(resultDiv);
+						}
+
+						
+
+						for (let i = 0; i < resultsArray.length; i++) {
 							let type = resultsArray[i][0];
 							let name = resultsArray[i][1];
 							let id = resultsArray[i][2];
 							let history = "";
-							if(type === 'user'){
+							if (type === 'user') {
 								history = "History";
 							}
 
@@ -135,25 +165,26 @@
 							$('.feed').append(resultDiv);
 						}
 					});
-					results.fail(function(jqXHR) { console.log("Error: "+jqXHR.status);});
-					results.always(function(){console.log("Feed Generated");});
+					results.fail(function (jqXHR) { console.log("Error: " + jqXHR.status); });
+					results.always(function () { console.log("Feed Generated"); });
 				}
 			</script>
-			</div>
 		</div>
-		<div class = "side-container" >
-			<div id = "submission">
-			   <?php
-					if(isset($_SESSION['userID'])){
-						echo '<p><a href ="postCreator.php" >Submit New Link</a></p>';
-						echo '<p><a href ="postCreator.php" >Submit New Text Post</a></p>';
-					} else {
-						echo '<a href ="signUp.php">Create an account and post today!</a>';
-					
-					}
-				?>
-				<img id = "ad" src ="images/Future.jpg"  alt = "Add for Breadit Premium">
-			</div>
+	</div>
+	<div class="side-container">
+		<div id="submission">
+			<?php
+			if (isset($_SESSION['userID'])) {
+				echo '<p><a href ="postCreator.php" >Submit New Link</a></p>';
+				echo '<p><a href ="postCreator.php" >Submit New Text Post</a></p>';
+			} else {
+				echo '<a href ="signUp.php">Create an account and post today!</a>';
+
+			}
+			?>
+			<img id="ad" src="images/Future.jpg" alt="Add for Breadit Premium">
 		</div>
-  </body>
+	</div>
+</body>
+
 </html>

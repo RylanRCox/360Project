@@ -25,7 +25,7 @@
 			$error = mysqli_connect_error();
 			if($error != null)
 			{
-				$output = 'Unable to connect to databse!';
+				$output = 'Unable to connect to database!';
 				exit($output);
 			} else {
 					

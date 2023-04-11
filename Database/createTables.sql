@@ -79,7 +79,7 @@ CREATE TABLE notifications (
 );
 
 
-INSERT INTO users VALUES (-1,"deletedemail","NOONESHOULDEVERUSETHISEVER$!@*#!*!*#!)(*!&!@*9832519823498101283489!(@*#()*!@*$(!%*(&!@(*&!@#(*!@#*8932982140981239048!(*!@#*(!@&(*!@(*!@*","deleted","none.png",DEFAULT,DEFAULT,DEFAULT);
+INSERT INTO users VALUES (-1,"deletedemail","NOONESHOULDEVERUSETHISEVER$!@*#!*!*#!)(*!&!@*9832519823498101283489!(@*#()*!@*$(!%*(&!@(*&!@#(*!@#*8932982140981239048!(*!@#*(!@&(*!@(*!@*","deleted","none.png",DEFAULT, DEFAULT,DEFAULT,DEFAULT);
 
 INSERT INTO slices VALUES (DEFAULT,"Sourdough", NULL, NULL);
 INSERT INTO slices VALUES (DEFAULT,"Flatbread", NULL, NULL);

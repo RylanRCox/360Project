@@ -95,6 +95,10 @@
 								const myTimeout = setTimeout(logout, 500);
 								function logout(){
 									$('#prefs').remove();
+									$('#userDiv').empty();
+									$('#userDiv').remove();
+									$('#notesLi').empty();
+									$('#notesLi').remove();
 									$('#logout').html('<a href="signIn.php">Login</a>');
 									$('#logout').attr("id","signUp");
 								}

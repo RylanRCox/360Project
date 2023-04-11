@@ -49,6 +49,7 @@ function setNotifications() {
 
 		let dropLi = document.createElement('li');
 		dropLi.setAttribute('class', 'dropdown');
+		dropLi.setAttribute('id', 'notesLi');
 
 		$('#headerList').append(dropLi);
 
@@ -56,7 +57,7 @@ function setNotifications() {
 		dropLink.setAttribute('href', 'javascript:void(0)');
 		dropLink.setAttribute('class', 'dropbtn');
 		dropLink.innerHTML = 'Notes ' + resultsArray[0][0];
-		dropLink.style.width = '5em';
+		dropLink.style.width = '4em';
 
 		dropLi.append(dropLink);
 

@@ -43,7 +43,7 @@ if($_SESSION['userID'] == -1){
 			<?php
 				if($_SESSION['userID'] != -1){
 					echo '<li id = prefs><a href ="userSettings.php">Settings</a></li>';
-					echo '<li id = logout><a href ="signOut.php">Logout</a></li>';
+					echo '<li id = logout><a>Logout</a></li>';
 				} else {
 					echo '<li id = logout><a href ="signIn.php">Login</a></li>';
 				}
@@ -58,6 +58,26 @@ if($_SESSION['userID'] == -1){
 				let headerList = document.getElementById('headerList');
 				headerList.append(displayUser(userID, displayName));
 			}
+            window.onload = (event) => {
+                if($('#logout')){
+							$('#logout').children().first().css({'cursor': 'pointer'});;
+							$('#logout').on("click",function(){
+								$.get("PHP/logOut.php");
+								
+								const myTimeout = setTimeout(logout, 500);
+								function logout(){
+									$('#prefs').remove();
+                                    $('#userDiv').empty();
+									$('#userDiv').remove();
+									$('#notesLi').empty();
+									$('#notesLi').remove();
+									$('#logout').html('<a href="signIn.php">Login</a>');
+									$('#logout').attr("id","signUp");
+                                    window.location.replace('homepage.php');
+								}
+							})
+						}
+            }
 		</script>
 	</nav>
     <div id="newPostCreator">

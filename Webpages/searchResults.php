@@ -59,7 +59,7 @@
 				<?php
 					if($_SESSION['userID'] != -1){
 						echo '<li id = prefs><a href ="userSettings.php">Settings</a></li>';
-						echo '<li id = logout><a href ="signOut.php">Logout</a></li>';
+						echo '<li id = logout><a>Logout</a></li>';
 					} else {
 						echo '<li id = logout><a href ="signIn.php">Login</a></li>';
 					}
@@ -78,6 +78,23 @@
 			<div class = "feed">
 			<script>
 				window.onload = (event) => {
+					if($('#logout')){
+							$('#logout').children().first().css({'cursor': 'pointer'});;
+							$('#logout').on("click",function(){
+								$.get("PHP/logOut.php");
+								
+								const myTimeout = setTimeout(logout, 500);
+								function logout(){
+									$('#prefs').remove();
+									$('#userDiv').empty();
+									$('#userDiv').remove();
+									$('#notesLi').empty();
+									$('#notesLi').remove();
+									$('#logout').html('<a href="signIn.php">Login</a>');
+									$('#logout').attr("id","signUp");
+								}
+							})
+						}
 					if(JSON.parse('<?php echo json_encode($realRequest); ?>')){
 						let keyWord = JSON.parse('<?php echo json_encode($keyWord); ?>');
 						queryDatabase(keyWord);

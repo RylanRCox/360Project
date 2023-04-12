@@ -3,6 +3,7 @@ session_start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,38 +12,39 @@ session_start();
 	<link rel="stylesheet" href="styles/signUpStyle.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
+
 <body>
-	<?php
-	session_start();
-	?>
 	<nav>
 		<div id="homeButton">
 			<a href="homepage.php"> &larr; Back to Homepage</a>
 		</div>
 	</nav>
 	<div id="signUpBox">
-		<form name = "signUpForm" method="post" id = "signup">
+		<form name="signUpForm" method="post" id="signup">
 			<fieldset>
 				<p>
 					<b>Welcome to Breadit!</b>
 				</p>
 				<p>
 					<label class="labelText">Please enter your email:</label>
-					<input type="email" name="Email" placeholder="Email" class="textfield" id = "email" required/>
+					<input type="email" name="Email" placeholder="Email" class="textfield" id="email" required />
 				</p>
 				<p>
 					<label class="labelText">Please enter your password:</label>
-					<input type="password" name="Password" placeholder="Password" class="textfield" id = "password" required/>
+					<input type="password" name="Password" placeholder="Password" class="textfield" id="password"
+						required />
 				</p>
 				<p>
 					<label class="labelText">Please enter your password again:</label>
-					<input type="password" name="Password2" placeholder="Password" class="textfield" id = "password2" required/>
+					<input type="password" name="Password2" placeholder="Password" class="textfield" id="password2"
+						required />
 				</p>
 				<p>
 					<label class="labelText">Please enter a display name:</label>
-					<input type="text" name="Displayname" placeholder="Display Name" class="textfield" id = "displayName" required/>
+					<input type="text" name="Displayname" placeholder="Display Name" class="textfield" id="displayName"
+						required />
 				</p>
-				<p id = "result">Your profile picture can be changed later</p>
+				<p id="result">Your profile picture can be changed later</p>
 				<p>
 					<input type="submit" value="Sign Up!" id="signUpButton" />
 				</p>
@@ -50,62 +52,76 @@ session_start();
 				<div id="roundButton">
 					<a href="signIn.php"> Back to Sign In </a>
 				</div>
-				
+
 			</fieldset>
 		</form>
 	</div>
 	<script>
 		//make request with ajax
-		$(document).ready(function() {
-			let password = $('#password').val();
-			let password2 = $('#password2').val();
-			$('#signUpButton').on('click',function(){
-				$('#signUpButton').attr('disabled','disabled');
+		$(document).ready(function () {
+			$('#signUpButton').on('click', function () {
+				let password = $('#password').val();
+				let password2 = $('#password2').val();
+				let emailText = $('#email').val();
+				let displayNameText = $('#displayName').val();
+				$('#signUpButton').attr('disabled', 'disabled');
 				var formData = {
-						email:$('#email').val(),
-						pass: $('#password').val(),
-						displayName: $('#displayName').val(),
-					};
-				if (password != password2){
+					email: $('#email').val(),
+					pass: $('#password').val(),
+					displayName: $('#displayName').val(),
+				};
+				if (password != password2) {
 					alert("Passwords must match");
-				}else{ 
+					window.location.replace('signUp.php');
+				} else if (password.length > 100) {
+					alert("Password too long");
+					window.location.replace('signUp.php');
+				} else if (emailText.length > 350) {
+					alert("Email too long");
+					window.location.replace('signUp.php');
+				} else if (displayNameText.length > 25) {
+					alert("Displayname too long");
+					window.location.replace('signUp.php');
+				} else {
 					$.ajax({
 						type: "POST",
 						url: "PHP/savesignup.php",
 						data: formData,
 						dataType: "json",
 						encode: true,
-						})
-						.done(function(data) {
+					})
+						.done(function (data) {
 							//return message from server, wait, then redirect. 
-						   $("#result").html(JSON.parse(JSON.stringify(data)).message);
-						   if(data['success']){
-							//if successfull call checklogin.php
-							var formData = {
-								email:$('#email').val(),
-								pass: $('#password').val(),
+
+							$("#result").html(JSON.parse(JSON.stringify(data)).message);
+							if (data['success']) {
+
+								//if successfull call checklogin.php
+								var formData = {
+									email: $('#email').val(),
+									pass: $('#password').val(),
 								}
-							   $.ajax({
+								$.ajax({
 									type: "POST",
 									url: "PHP/checkLogin.php",
 									data: formData,
 									dataType: "json",
 									encode: true,
-									})
-						   const myTimeout = setTimeout(newWindow, 2000);
-							function newWindow() {
+								})
+								const myTimeout = setTimeout(newWindow, 2000);
+								function newWindow() {
 									window.location.href = "homepage.php";
+								}
 							}
-						}
-						}).fail(function(data){
-							$("#result").html(JSON.parse(JSON.stringify(data)).errors);
+						}).fail(function (data) {
 						});
-					   
-						
-				   
-				}  
+
+
+
+				}
 			});
 		});
 	</script>
 </body>
+
 </html>

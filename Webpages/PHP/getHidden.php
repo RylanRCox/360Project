@@ -1,13 +1,10 @@
 <?php
 	$realRequest = false;
-	$postLike = false;
-	$commentLike = false;
 	
 	if ($_SERVER["REQUEST_METHOD"] == "POST"){
 		if(isset($_POST["postID"]) && isset($_POST["userID"])){
 			$postID = $_POST["postID"];
 			$userID = $_POST["userID"];
-			$postLike = true;
 			$realRequest = true;
 		} else {
 			echo "Missing ID";

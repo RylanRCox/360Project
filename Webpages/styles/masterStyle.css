@@ -427,7 +427,6 @@ a:active {
 	overflow: auto;
 	color: white;
 	background-color: #340a68;
-	height: 16em;
 	text-align: center;
 	border-radius: .3em;
 	border: .1em solid #410e80;
@@ -508,8 +507,6 @@ a:active {
 .commentSubmission {
 	float: right;
 	margin-bottom: 2em;
-	background-image: url(../images/submit.png);
-	background-size: 4em;
 	width: 3.5em;
 	height: 2.3em;
 	background-repeat: no-repeat;
@@ -652,3 +649,51 @@ fieldset {
 		background-color: deepskyblue;
 		border-radius: 0.5em;
 	}
+
+/*Settings page*/
+.centralDiv {
+	margin: auto;
+	margin-bottom: 1em;
+	padding: 0.5em;
+	width: 20em;
+	background-color: white;
+	border: 0.3em dashed red;
+}
+
+.centralDiv fieldset {
+	padding: 0;
+}
+
+.title {
+	margin-top: 0.3em;
+}
+
+.inputField {
+	margin-left: 0.5em;
+}
+
+.centralDiv label {
+	font-size: 0.8em;
+	color: lightslategrey;
+}
+
+.textfield {
+	background-color: #C7EFFF;
+	height: 2em;
+	width: 70%;
+	margin-top: 0.5em;
+}
+
+.submitButton {
+	display: block;
+	color: white;
+	width: auto;
+	padding: 0.5em 0.5em 0.5em 0.5em;
+	margin: auto;
+	margin-bottom: -0.8em;
+	border: 2px solid black;
+	background-color: #3096C1;
+	border-radius: 0.1em;
+	border-radius: 1em;
+	font-size: 0.8em;
+}

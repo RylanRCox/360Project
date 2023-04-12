@@ -97,7 +97,7 @@ if (!empty($errors)) {
 		$data['success'] = TRUE;
 		$data['message'] = 'Comment Submitted';
 		$stmt->close();
-	} catch (PDOException $e) {
+	} catch (mysqli_sql_exception $e) {
 		//return failure
 		$data['success'] = FALSE;
 		$data['message'] = 'Unable to Connect to server';

@@ -24,7 +24,7 @@ function displayUser(userID, displayName) {
 	figCap.setAttribute('id', 'displayName');
 	figCap.innerHTML = displayName;
 	setNotifications();
-	
+
 	/* 
 	<div id = "userDiv" >
 		<figure id = "userFig" >
@@ -82,7 +82,7 @@ function setNotifications() {
 				noteLink.innerHTML = displayName + " commented on one of your posts";
 				noteDiv.append(noteLink);
 			}
-			
+
 		}
 	});
 	results.fail(function (jqXHR) { console.log("Error: " + jqXHR.status); });

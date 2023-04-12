@@ -56,7 +56,7 @@ function printFeed(getCall, isAdmin, activeUser) {
 		let count = document.getElementById('postCount');
 		let countVals = count.innerHTML;
 		let index = parseInt(countVals);
-		
+
 
 		//Now we generate our cap, this posts maximum 10 values, but won't throw and error if we have less.
 		let cap = index + 10;
@@ -81,7 +81,7 @@ function printFeed(getCall, isAdmin, activeUser) {
 			console.log(isHidden);
 
 			//Determine whether or not the post has an image attached.
-			
+
 
 			//Calculate the days since created
 			days = calculateDateDifference(dateCreated);
@@ -93,14 +93,14 @@ function printFeed(getCall, isAdmin, activeUser) {
 			}
 			console.log('Outer Log: ' + postID);
 			buildPostDiv(votes, postID, title, sliceID, sliceName, userID, displayName, days, count, isAdmin, getCall, activeUser, isHidden);
-			
+
 		}
 
 		pageIndexing(count, index, postCount, cap, getCall, isAdmin, activeUser);
 		setTimeout(function () {
 			let breadVotes = document.getElementsByClassName('breadvote');
 			for (let i = 0; i < breadVotes.length; i++) {
-				
+
 				breadVotes[i].addEventListener('click', function () {
 					if (activeUser != -1) {
 
@@ -115,7 +115,7 @@ function printFeed(getCall, isAdmin, activeUser) {
 					} else {
 						alert('Please sign in to like posts or comments');
 					}
-					
+
 				});
 			}
 			let hideButtons = document.getElementsByClassName('hideButton');
@@ -492,7 +492,7 @@ function buildPostDiv(votes, postID, title, sliceID, sliceName, userID, displayN
 
 	/*<li> </li> */
 	let hide = document.createElement("li");
-	
+
 
 	/*<a href="Comments.php">COMMENTCOUNT Comments</a> */
 	let commentsLink = document.createElement("a");
@@ -558,11 +558,11 @@ function buildPostDiv(votes, postID, title, sliceID, sliceName, userID, displayN
 
 	lowerList.append(share);
 	share.style.cursor = "pointer";
-	share.addEventListener("click",function(){
-		navigator.clipboard.writeText("localhost/360Project/Webpages/post.php?postID="+postID);
+	share.addEventListener("click", function () {
+		navigator.clipboard.writeText("localhost/360Project/Webpages/post.php?postID=" + postID);
 	})
 	hide.style.cursor = "pointer";
-	hide.addEventListener("click",function(){
+	hide.addEventListener("click", function () {
 		postDiv.style.display = 'none';
 	})
 	lowerList.append(hide);
@@ -596,8 +596,8 @@ function buildPostDiv(votes, postID, title, sliceID, sliceName, userID, displayN
 			});
 		}, 100);
 	}
-		console.log('Inner Log Lower: ' + postID);
-		$(".feed").append(postDiv);
+	console.log('Inner Log Lower: ' + postID);
+	$(".feed").append(postDiv);
 }
 function calculateDateDifference(dateCreated) {
 	//We get the current date, and the date the post was created. Then we calculate the difference between and output it as days.

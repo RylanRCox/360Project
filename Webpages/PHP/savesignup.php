@@ -77,7 +77,7 @@ if (!empty($errors)) {
 		$data['success'] = true;
 		$data['message'] = 'Successful SignUp! Redirecting...';
 
-	} catch (PDOException $e) {
+	} catch (mysqli_sql_exception $e) {
 		//return failure
 		$data['success'] = false;
 		$data['message'] = 'Unable to Connect to server';

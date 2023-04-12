@@ -8,9 +8,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	if (isset($_POST['postID']) && isset($_SESSION['userID'])) {
 		$userID = $_SESSION['userID'];
 		$postID = $_POST['postID'];
-	} else if (!isset($_POST['postID'])){
+	} else if (!isset($_POST['postID'])) {
 		$errors['$postID'] = 'Missing Post ID';
-	} else if (!isset($_SESSION['userID'])){
+	} else if (!isset($_SESSION['userID'])) {
 		$errors['$userID'] = 'Missing User ID';
 	}
 } else {
@@ -33,7 +33,7 @@ if (!empty($errors)) {
 		$stmt->execute();
 
 		$stmt->close();
-	} catch (PDOException $e) {
+	} catch (mysqli_sql_exception $e) {
 		//return failure
 		$data['success'] = FALSE;
 		$data['message'] = 'Unable to Connect to server';

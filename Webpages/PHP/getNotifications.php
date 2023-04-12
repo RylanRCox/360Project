@@ -33,7 +33,7 @@ if (isset($_SESSION['userID'])) {
 			}
 			echo json_encode($arrayOfArrays);
 			$stmt->close();
-		} catch (PDOException $e) {
+		} catch (mysqli_sql_exception $e) {
 			//return failure
 			$data['success'] = FALSE;
 			$data['message'] = 'Unable to Connect to server';

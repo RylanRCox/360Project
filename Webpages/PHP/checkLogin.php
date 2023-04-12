@@ -5,13 +5,13 @@ include('credentials.php');
 $data = [];
 $errors = [];
 
-if($_SERVER["REQUEST_METHOD"] == "POST"){
-    if(isset($_POST['email']) && isset($_POST['pass'])){
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST['email']) && isset($_POST['pass'])) {
         $email = $_POST['email'];
         $pass = $_POST['pass'];
-    } else if(!isset($_POST['pass'])){
+    } else if (!isset($_POST['pass'])) {
         $errors['email'] = 'Missing email';
-    } else if(!isset($_POST['email'])){
+    } else if (!isset($_POST['email'])) {
         $errors['pass'] = "Password is required.";
     }
 }
@@ -40,7 +40,7 @@ if (!empty($errors)) {
             $_SESSION['isAdmin'] = $isAdmin;
             $_SESSION['displayName'] = $displayName;
         }
-    } catch (PDOException $e) {
+    } catch (mysqli_sql_exception $e) {
         //return failure
         $data['success'] = false;
         $data['errors'] = 'Unable to Connect to server' . $e;

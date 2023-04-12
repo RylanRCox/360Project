@@ -104,7 +104,7 @@ checkAdmin();
 						/*<div class = "searchResult"></div> */
 						let resultDiv = document.createElement("div");
 						resultDiv.setAttribute('class', 'searchResult');
-						if(resultsArray.length == 0){
+						if (resultsArray.length == 0) {
 
 							let results = document.createElement("p");
 							results.setAttribute('id', 'resultsP');
@@ -114,18 +114,18 @@ checkAdmin();
 
 							$('.feed').append(resultDiv);
 
-						} else { 
+						} else {
 
 							let results = document.createElement("p");
 							results.setAttribute('id', 'resultsP');
-							results.innerHTML = "Showing Results For '" + keyWord +  "':";
+							results.innerHTML = "Showing Results For '" + keyWord + "':";
 
 							resultDiv.append(results);
 
 							$('.feed').append(resultDiv);
 						}
 
-						
+
 
 						for (let i = 0; i < resultsArray.length; i++) {
 							let type = resultsArray[i][0];

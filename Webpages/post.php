@@ -150,7 +150,7 @@ checkAdmin();
 							if (data[6] != null) {
 								comments = data[6];
 							}
-							$("#comments").append("<a href = \"comments.php\">" + comments + " Comments</a>");
+							$("#comments").append("<a>" + comments + " Comments</a>");
 							let isAdmin = JSON.parse('<?php echo json_encode($_SESSION['isAdmin']); ?>');
 
 							if (isAdmin || activeUser == data[8] && activeUser != -1) {
@@ -533,7 +533,7 @@ checkAdmin();
 						<li id="comments">
 						</li>
 						<li>
-							<a id='shareLink' href="Share.php">Share</a>
+							<a id='shareLink'>Share</a>
 						</li>
 						<li id="deleteHolder">
 						</li>

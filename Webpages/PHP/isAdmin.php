@@ -6,5 +6,8 @@
 		if(!isset($_SESSION['userID'])){
 			$_SESSION['userID'] = -1;
 		}
+		if(!isset($_SESSION['displayName'])){
+			$_SESSION['displayName'] = null;
+		}
 	}
 ?>

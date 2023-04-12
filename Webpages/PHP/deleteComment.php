@@ -16,6 +16,10 @@
         try{
             $mysqli = new mysqli($servername, $username, $password, $dbname);
 
+            if ($mysqli->connect_error) {
+                die("Connection failed: " . $conn->connect_error);
+            }    
+
             $conn = $mysqli->prepare("UPDATE comments SET userID = -1, content = '[Deleted]' WHERE commentID = ?");
 			$conn->bind_param('i', $commentID);
 			$conn->execute();

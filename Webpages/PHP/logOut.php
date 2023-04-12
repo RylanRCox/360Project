@@ -1,7 +1,4 @@
-<?php session_start(); ?>
-<!DOCTYPE html>
-<body>
-<?php 
+<?php session_start();
 
 if(isset($_SESSION['userID'])) {
 	$_SESSION['userID'] = -1;
@@ -14,7 +11,5 @@ if(isset($_SESSION['userID'])) {
 		</script>";
 }
 ?>
-</body>
-</html>
 
 

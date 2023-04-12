@@ -1,6 +1,6 @@
 <?php
 	$realRequest = false;
-	
+	$row = NULL;
 	if ($_SERVER["REQUEST_METHOD"] == "POST"){
 		if(isset($_POST["postID"]) && isset($_POST["userID"])){
 			$postID = $_POST["postID"];
@@ -34,7 +34,7 @@
 
 				$result = mysqli_stmt_get_result($stmt);
 				while($row = mysqli_fetch_array($result)){
-					echo $row;
+					echo implode($row);
 				}
 				
 

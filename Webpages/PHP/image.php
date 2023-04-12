@@ -34,8 +34,10 @@ if ($stmt->fetch() != NULL && isset($imageType) && $imageType != NULL) {
   header("Content-type: " . $imageType);
   echo $image;
 } else {
-  $file = file_get_contents('..\images\noUser.jpg');
+  $file = file_get_contents('noUser.jpg');
   header("Content-type: jpg");
   echo $file;
 }
+
+
 ?>

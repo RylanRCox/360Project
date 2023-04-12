@@ -1,0 +1,8 @@
+#ignore node modules
+/node_modules
+/tests/node_modules
+/vendor
+/tests/vendor
+/Webpages/vendor
+/composer.json
+/composer.lock

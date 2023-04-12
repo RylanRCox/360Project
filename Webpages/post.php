@@ -79,7 +79,7 @@ checkAdmin();
 			<div class="feed">
 				<script>
 					function getPostData(postID) {
-						let results = $.post("php/getPost.php", { postID: postID });
+						let results = $.post("PHP/getPost.php", { postID: postID });
 						results.done(function (data) {
 							data = JSON.parse(data);
 							//0 = title 1 = content 2 = votes 3 = dateCreated 4 = sliceName 5 = displayName 6 = count 7 = sliceID 8 = userID 9 = images
@@ -172,7 +172,7 @@ checkAdmin();
 
 					function writeComments(postID) {
 						let activeUser = JSON.parse("<?php echo json_encode($_SESSION['userID']); ?>");
-						let results = $.post("php/getComments.php", { postID: postID });
+						let results = $.post("PHP/getComments.php", { postID: postID });
 						results.done(function (data) {
 							data = JSON.parse(data);
 							$('#commentHolder').empty();

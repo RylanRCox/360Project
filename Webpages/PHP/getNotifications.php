@@ -2,7 +2,7 @@
 session_start();
 include('credentials.php');
 $loggedIn = false;
-
+$data = [];
 if (isset($_SESSION['userID'])) {
 	if ($_SESSION['userID'] != -1) {
 		$userID = $_SESSION['userID'];
@@ -33,6 +33,7 @@ if (isset($_SESSION['userID'])) {
 			}
 			echo json_encode($arrayOfArrays);
 			$stmt->close();
+			$data['success'] = TRUE;
 		} catch (mysqli_sql_exception $e) {
 			//return failure
 			$data['success'] = FALSE;

@@ -97,7 +97,7 @@ checkAdmin();
 					}
 				}
 				function queryDatabase(keyWord) {
-					let results = $.get("php/searchDB.php?keyWord=" + keyWord);
+					let results = $.get("PHP/searchDB.php?keyWord=" + keyWord);
 					results.done(function (data) {
 						console.log(data);
 						let resultsArray = JSON.parse(data);
@@ -175,7 +175,6 @@ checkAdmin();
 		<div id="submission">
 			<?php
 			if (isset($_SESSION['userID'])) {
-				echo '<p><a href ="postCreator.php" >Submit New Link</a></p>';
 				echo '<p><a href ="postCreator.php" >Submit New Text Post</a></p>';
 			} else {
 				echo '<a href ="signUp.php">Create an account and post today!</a>';

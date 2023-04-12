@@ -559,7 +559,7 @@ function buildPostDiv(votes, postID, title, sliceID, sliceName, userID, displayN
 	lowerList.append(share);
 	share.style.cursor = "pointer";
 	share.addEventListener("click", function () {
-		alert('Link Copied to ClipBoard!')
+		alert('Link copied to clipboard');
 		navigator.clipboard.writeText("localhost/360Project/Webpages/post.php?postID=" + postID);
 	})
 	hide.style.cursor = "pointer";

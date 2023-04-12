@@ -152,17 +152,7 @@ checkAdmin();
 							}
 							$("#comments").append("<a>" + comments + " Comments</a>");
 							let share = document.createElement("a");
-							share.innerHTML = 'Share';
-							$("#share").append(share);
-								share.style.cursor = "pointer";
-								share.addEventListener("click", function () {
-									alert('Link Copied to ClipBoard!')
-									navigator.clipboard.writeText("localhost/360Project/Webpages/post.php?postID=" + postID);
-								})
-								hide.style.cursor = "pointer";
-								hide.addEventListener("click", function () {
-									postDiv.style.display = 'none';
-								})
+							
 							let isAdmin = JSON.parse('<?php echo json_encode($_SESSION['isAdmin']); ?>');
 
 							if (isAdmin || activeUser == data[8] && activeUser != -1) {

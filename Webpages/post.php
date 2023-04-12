@@ -151,6 +151,18 @@ checkAdmin();
 								comments = data[6];
 							}
 							$("#comments").append("<a>" + comments + " Comments</a>");
+							let share = document.createElement("a");
+							share.innerHTML = 'Share';
+							$("#share").append(share);
+								share.style.cursor = "pointer";
+								share.addEventListener("click", function () {
+									alert('Link Copied to ClipBoard!')
+									navigator.clipboard.writeText("localhost/360Project/Webpages/post.php?postID=" + postID);
+								})
+								hide.style.cursor = "pointer";
+								hide.addEventListener("click", function () {
+									postDiv.style.display = 'none';
+								})
 							let isAdmin = JSON.parse('<?php echo json_encode($_SESSION['isAdmin']); ?>');
 
 							if (isAdmin || activeUser == data[8] && activeUser != -1) {
@@ -198,7 +210,7 @@ checkAdmin();
 										results.always(function () {
 										});
 									} else {
-										alert('Please sign in to like posts or comments');
+										alert('Please sign inin to like posts or comments');
 									}
 
 								});
@@ -532,8 +544,7 @@ checkAdmin();
 					<ul>
 						<li id="comments">
 						</li>
-						<li>
-							<a id='shareLink'>Share</a>
+						<li id='share'>
 						</li>
 						<li id="deleteHolder">
 						</li>

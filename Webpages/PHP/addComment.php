@@ -4,8 +4,8 @@ include('credentials.php');
 $data = [];
 $errors = [];
 
-if($_SERVER["REQUEST_METHOD"] == "POST"){
-	if(isset($_POST['commentParent']) && isset($_POST['content']) && isset($_POST['postID']) && isset($_SESSION['userID'])){
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+	if (isset($_POST['commentParent']) && isset($_POST['content']) && isset($_POST['postID']) && isset($_SESSION['userID'])) {
 		$commentParent = (int) $_POST['commentParent'];
 		$content = $_POST['content'];
 		$postID = (int) $_POST['postID'];
@@ -15,12 +15,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 			$errors['userID'] = "Log in";
 			$data['message'] = $errors['userID'];
 
-		} else if (strlen($content) > 8000){
+		} else if (strlen($content) > 8000) {
 
 			$errors['content'] = "Content too long";
 			$data['message'] = $errors['content'];
 
-		} else if ($content == ""){
+		} else if ($content == "") {
 
 			$errors['content'] = "Content Missing";
 			$data['message'] = $errors['content'];
@@ -84,13 +84,13 @@ if (!empty($errors)) {
 			}
 			$stmt->close();
 		}
+		if ($notifyUser != -1) {
+			$stmt = $mysqli->prepare("INSERT INTO notifications VALUES (DEFAULT, ?, ?, ?, ?)");
+			$stmt->bind_param('iiii', $userID, $notifyUser, $postID, $commentParent);
+			$stmt->execute();
+			$stmt->close();
 
-		$stmt = $mysqli->prepare("INSERT INTO notifications VALUES (DEFAULT, ?, ?, ?, ?)");
-		$stmt->bind_param('iiii', $userID, $notifyUser, $postID, $commentParent);
-		$stmt->execute();
-		$stmt->close();
-
-
+		}
 		$stmt = $mysqli->prepare("INSERT INTO comments VALUES (DEFAULT, ?, DEFAULT, DEFAULT, ?, ?, ?)");
 		$stmt->bind_param('siii', $content, $postID, $commentParent, $userID);
 		$stmt->execute();

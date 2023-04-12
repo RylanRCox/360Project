@@ -59,9 +59,11 @@ session_start();
 	<script>
 		//make request with ajax
 		$(document).ready(function () {
-			let password = $('#password').val();
-			let password2 = $('#password2').val();
 			$('#signUpButton').on('click', function () {
+				let password = $('#password').val();
+				let password2 = $('#password2').val();
+				let emailText = $('#email').val();
+				let displayNameText = $('#displayName').val();
 				$('#signUpButton').attr('disabled', 'disabled');
 				var formData = {
 					email: $('#email').val(),
@@ -70,6 +72,16 @@ session_start();
 				};
 				if (password != password2) {
 					alert("Passwords must match");
+					window.location.replace('signUp.php');
+				} else if (password.length > 100) {
+					alert("Password too long");
+					window.location.replace('signUp.php');
+				} else if (emailText.length > 350) {
+					alert("Email too long");
+					window.location.replace('signUp.php');
+				} else if (displayNameText.length > 25) {
+					alert("Displayname too long");
+					window.location.replace('signUp.php');
 				} else {
 					$.ajax({
 						type: "POST",
@@ -80,10 +92,10 @@ session_start();
 					})
 						.done(function (data) {
 							//return message from server, wait, then redirect. 
-							
+
 							$("#result").html(JSON.parse(JSON.stringify(data)).message);
 							if (data['success']) {
-								
+
 								//if successfull call checklogin.php
 								var formData = {
 									email: $('#email').val(),

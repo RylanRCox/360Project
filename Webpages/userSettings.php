@@ -172,21 +172,27 @@ if ($_SESSION['userID'] == -1) {
 
             $("#emailform").on('submit', (function (e) {
                 e.preventDefault();
-                let formData = {
-                    email: $('#email').val(),
-                };
-                console.log(formData);
-                $.ajax({
-                    type: "POST",
-                    url: "PHP/updateEmail.php",
-                    data: formData,
-                    dataType: "json",
-                    encode: true,
-                }).done(function (data) {
-                    alert(data['message']);
-                }).fail(function (data) {
-                    console.log(data);
-                });
+                let emailText = $('#email').val();
+                if (emailText.length <= 350) {
+                    let formData = {
+                        email: $('#email').val(),
+                    };
+                    console.log(formData);
+                    $.ajax({
+                        type: "POST",
+                        url: "PHP/updateEmail.php",
+                        data: formData,
+                        dataType: "json",
+                        encode: true,
+                    }).done(function (data) {
+                        alert(data['message']);
+                    }).fail(function (data) {
+                        console.log(data);
+                    });
+                } else {
+                    alert('Email too Long');
+                }
+
             }));
             $("#passForm").on('submit', (function (e) {
                 e.preventDefault();
@@ -215,24 +221,30 @@ if ($_SESSION['userID'] == -1) {
             }));
             $("#displayNameForm").on('submit', (function (e) {
                 e.preventDefault();
-                let formData = {
-                    displayName: $('#displayNameInput').val(),
-                };
-                console.log(formData);
-                $.ajax({
-                    type: "POST",
-                    url: "PHP/updateDisplayName.php",
-                    data: formData,
-                    dataType: "json",
-                    encode: true,
-                }).done(function (data) {
-                    alert(data['message']);
-                }).fail(function (data) {
-                    console.log(data);
-                });
-                setTimeout(function () {
-                    window.location.reload();
-                }, 500);
+                let displayNameText = $('#displayNameInput').val();
+                if (displayNameText.length < 25) {
+                    let formData = {
+                        displayName: $('#displayNameInput').val(),
+                    };
+                    console.log(formData);
+                    $.ajax({
+                        type: "POST",
+                        url: "PHP/updateDisplayName.php",
+                        data: formData,
+                        dataType: "json",
+                        encode: true,
+                    }).done(function (data) {
+                        alert(data['message']);
+                    }).fail(function (data) {
+                        console.log(data);
+                    });
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 500);
+                } else {
+                    alert('Display name too long');
+                }
+
 
             }));
 

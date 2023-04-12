@@ -1,5 +1,5 @@
 function deleteUser(userID) {
-    let results = $.post("php/deleteUser.php", { userID: userID });
+    let results = $.post("PHP/deleteUser.php", { userID: userID });
     results.done(function (data) {
         console.log('DATA: ' + data);
     });

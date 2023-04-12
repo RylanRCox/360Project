@@ -49,7 +49,7 @@ checkAdmin();
 				</div>
 			</li>
 			<li id="searchbox">
-				<form method="GET" action="searchResults.php">
+				<form method="GET" action="./searchResults.php">
 					<input type="text" name="keyWord" placeHolder="Search" id="search" required>
 					<button type="submit" id="searchButton">Search</button>
 				</form>

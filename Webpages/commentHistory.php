@@ -80,7 +80,7 @@ checkAdmin();
 				<script>
 
 					function writeComments() {
-						let results = $.post("php/getComments.php", { userID: <?php echo json_encode($_GET["userID"]); ?> });
+						let results = $.post("PHP/getComments.php", { userID: <?php echo json_encode($_GET["userID"]); ?> });
 						results.done(function (data) {
 							data = JSON.parse(data);
 							$('#commentHolder').empty();

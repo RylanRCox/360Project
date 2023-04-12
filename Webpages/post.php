@@ -79,7 +79,7 @@ checkAdmin();
 			<div class="feed">
 				<script>
 					function getPostData(postID) {
-						let results = $.post("php/getPost.php", { postID: postID });
+						let results = $.post("PHP/getPost.php", { postID: postID });
 						results.done(function (data) {
 							data = JSON.parse(data);
 							//0 = title 1 = content 2 = votes 3 = dateCreated 4 = sliceName 5 = displayName 6 = count 7 = sliceID 8 = userID 9 = images
@@ -151,6 +151,8 @@ checkAdmin();
 								comments = data[6];
 							}
 							$("#comments").append("<a>" + comments + " Comments</a>");
+							let share = document.createElement("a");
+							
 							let isAdmin = JSON.parse('<?php echo json_encode($_SESSION['isAdmin']); ?>');
 
 							if (isAdmin || activeUser == data[8] && activeUser != -1) {
@@ -172,7 +174,7 @@ checkAdmin();
 
 					function writeComments(postID) {
 						let activeUser = JSON.parse("<?php echo json_encode($_SESSION['userID']); ?>");
-						let results = $.post("php/getComments.php", { postID: postID });
+						let results = $.post("PHP/getComments.php", { postID: postID });
 						results.done(function (data) {
 							data = JSON.parse(data);
 							$('#commentHolder').empty();
@@ -198,7 +200,7 @@ checkAdmin();
 										results.always(function () {
 										});
 									} else {
-										alert('Please sign in to like posts or comments');
+										alert('Please sign inin to like posts or comments');
 									}
 
 								});
@@ -532,8 +534,7 @@ checkAdmin();
 					<ul>
 						<li id="comments">
 						</li>
-						<li>
-							<a id='shareLink'>Share</a>
+						<li id='share'>
 						</li>
 						<li id="deleteHolder">
 						</li>

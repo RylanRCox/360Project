@@ -15,7 +15,6 @@ if ($_SESSION['userID'] == -1) {
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Breadit - Settings</title>
     <link rel="stylesheet" href="styles/masterStyle.css">
-    <script type="text/javascript" src="JS/scripts.js"></script>
     <script type="text/javascript" src="./JS/displayUser.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>

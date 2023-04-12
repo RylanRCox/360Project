@@ -507,8 +507,6 @@ a:active {
 .commentSubmission {
 	float: right;
 	margin-bottom: 2em;
-	background-image: url(../images/submit.png);
-	background-size: 4em;
 	width: 3.5em;
 	height: 2.3em;
 	background-repeat: no-repeat;
